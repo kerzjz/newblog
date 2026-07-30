@@ -311,7 +311,6 @@ export const aboutConfig = {
   /** 微信显示文字 
   wechatValue: "@xxx",
   */
-  `
   /** QQ 显示文字 */
   qqValue: "3869843633",
   /** GitHub Socials 区块的邮箱链接 */
