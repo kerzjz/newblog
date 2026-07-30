@@ -18,7 +18,8 @@ export const siteConfig = {
   avatar: "https://cdn-us.imgs.moe/2026/01/17/a88d8365565406c0202ca8bad0560bd4.png",
   /** 作者签名/座右铭（显示在 AuthorCard 侧边栏） */
   signature: "Stay hungry, stay foolish.",
-   umami: {
+  
+  umami: {
     enabled: false,
     scriptUrl: "",
     websiteId: "",
