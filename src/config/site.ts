@@ -5,53 +5,53 @@
 
 export const siteConfig = {
   /** 站点标题（显示在导航栏和浏览器标题中） */
-  title: "UpXuu",
+  title: "Ker ZJZ",
   /** 站点副标题（用 "/" 分隔多句，首页打字动画会轮流展示） */
-  subtitle: "HI I AM UPXUU / UPXUU AND YOU",
+  subtitle: "你好👋 我是Ker ZJZ~ 技术[Web/AI]・艺术与文化[钢琴/设计]・游戏[Minecraft]・经济 现在关注，就是老粉啦~ 感谢关注！",
   /** 站点描述（用于 SEO 和社交分享） */
-  description: "UpXuu's personal blog and portfolio",
+  description: "Ker ZJZ",
   /** 作者名 */
-  author: "UpXuu",
+  author: "Ker ZJZ",
   /** 站点 URL（影响 Canonical、Sitemap、OG、RSS 等所有绝对链接） */
-  url: "https://upxuu.com", // Base URL of the site
+  url: "https://", // Base URL of the site
   /** 作者头像 URL（导航栏、关于页、AuthorCard 等处使用） */
-  avatar: "https://upxuu.com/images/me.jpg",
+  avatar: "https://cdn-us.imgs.moe/2026/01/17/a88d8365565406c0202ca8bad0560bd4.png",
   /** 作者签名/座右铭（显示在 AuthorCard 侧边栏） */
-  signature: "逐光而上！",
+  signature: "Stay hungry, stay foolish. ",
 
   /** 社交链接（AuthorCard、关于页、页脚等处使用） */
   socials: {
-    github: "https://github.com/ImUpXuu",
+    github: "https://github.com/kerzjz",
     /** GitHub 用户名（关于页拉取仓库列表用，大写） */
-    githubUser: "IMUPXUU",
-    bilibili: "https://space.bilibili.com/3546855124240550",
+    githubUser: "KERZJZ",
+    bilibili: "https://space.bilibili.com/",
     /** Bilibili mid（关于页拉取视频列表用） */
-    bilibiliMid: "3546855124240550",
+    bilibiliMid: "3546746017810685",
     /** AuthorCard 上显示的 Bilibili 文字 */
-    bilibiliDisplayName: "UPXUU",
-    email: "upxuu@outlook.com",
-    website: "https://upxuu.com",
+    bilibiliDisplayName: "Ker_ZJZ",
+    email: "kerzjz@outlook.com",
+    website: "https://kerzjz.qzz.io",
     /** 关于页额外社交链接 */
     twitter: "https://x.com/IMUPXUU",
     youtube: "https://youtube.com/@UpXuu",
     wechat: "@imljxu",
-    qq: "3697773416",
+    qq: "3869843633",
     /** QQ群链接（欢迎提示中使用） */
-    qqGroup: "https://qun.qq.com/universal-share/share?ac=1&authKey=NZ9BP%2BPT44nu34JWAL4Jdz25Bq7ueQoOfOqA4iYPT1JvQKYktml43kgBTMfqTkNl&busi_data=eyJncm91cENvZGUiOiIxMTAzMjMyNDIyIiwidG9rZW4iOiJTZDh2RmhWbXFTL3ZHbVBXeXhJZndQTVcrOUlhNXRSNlczVG1GNUIzQnlQejFZSThWYStSSEVEWUtDcHdHSTM3IiwidWluIjoiMzY5Nzc3MzQxNiJ9&data=HZcezojmJTU_U4qRqv_3ODAb7vm86b6wP8YEp9Stz5b4EzngKNFllXJneyVO7qr4u-plsM84FyvpZl6kkuyZgg&svctype=4&tempid=h5_group_info",
+    qqGroup: "",
     /** 订阅链接（欢迎提示中的"订阅"按钮，指向 GitHub Issues 等） */
-    subscribe: "https://github.com/ImUpXuu/xuhome/issues",
+    subscribe: "https://github.com/kerzjz/kerzjz.github.io/issues",
   },
 
   /** 评论系统配置 */
   waline: {
     /** Waline 服务端地址 */
-    serverURL: 'https://comment.upxuu.com',
+    serverURL: 'https://',
   },
 
   /** 访问统计 — Umami（可配多个实例，留空数组则不加载） */
   analytics: {
     umami: [
-      { src: "https://stats.upxuu.com/script.js", id: "cd983d6c-e011-489d-903f-4757ce41c14d" },
+      { src: "https://", id: "xxx" },
     ],
     /** 站点统计 API（页脚访问量/在线人数、欢迎提示调用） */
     statsApi: {
@@ -71,7 +71,7 @@ export const siteConfig = {
   },
 
   /** 站点运行起始时间（页脚"已在互联网中航行"计时器用） */
-  startTime: new Date(2025, 8, 30, 20, 20, 0),
+  startTime: new Date(yyyy, m, dd, hh, mm, s),
 
   /** 外部链接安全配置 — 可信域名（点击这些域名的外链不弹确认框） */
   trustedDomains: [
@@ -133,11 +133,11 @@ export const navConfig: {
  */
 export const footerConfig = {
   /** 版权文字 */
-  copyrightText: "© 2026 UpXuu. All Rights Reserved. ",
+  copyrightText: "© 2026 Ker ZJZ. All Rights Reserved. ",
   /** ICP 备案信息（留空则不显示） */
   icp: {
     text: "萌 ICP 备 20269996 号",
-    link: "https://icp.gov.moe/?keyword=20269996",
+    link: "https://icp.gov.moe/?keyword=20259426",
   },
   /** 页脚底部链接列表 */
   links: [
@@ -159,21 +159,23 @@ export const footerConfig = {
  */
 export const seoConfig = {
   /** 默认页面标题（无 title 时使用） */
-  defaultTitle: "UpXuu's blog",
+  defaultTitle: "Ker ZJZ",
   /** 标题后缀（拼接到每个页面 title 之后） */
-  titleTemplate: " - UpXuu's blog",
+  titleTemplate: " - Ker ZJZ",
   /** 默认页面描述 */
-  defaultDescription: "UpXuu 的个人博客，记录一位独立开发者的生活随笔、编程实践与技术思考。涵盖 Web 开发、Astro 建站、开源项目与日常感悟，用文字连接数字世界的每一份热爱。",
+  defaultDescription: "Ker ZJZ",
   /** 默认 OG 图片 URL */
   defaultImage: "https://upxuu.com/images/me.jpg",
   /** SEO 关键词 */
-  keywords: ["UpXuu", "blog", "开发者", "生活", "学习", "技术分享", "upxuu的碎碎念"],
-  /** Twitter Card 配置 */
+  keywords: ["Ker ZJZ", "xxx", "xxx", "xxx", "xxx", "xxx", "xxx"],
+  /**
+  Twitter Card 配置 
   twitter: {
     card: "summary_large_image",
-    site: "@ImUpXuu",
-    creator: "@ImUpXuu",
+    site: "@xxx",
+    creator: "@xxx",
   },
+  */
   /** DNS 预解析域名列表 */
   dnsPrefetch: [
     "//f.xxu6.top",
@@ -193,7 +195,7 @@ export const seoConfig = {
  */
 export const bannerConfig = {
   /** Banner 主标题（一般等于站点标题） */
-  title: "UpXuu",
+  title: "Ker ZJZ",
   /** 背景网格图案透明度（0-1） */
   gridPatternOpacity: 0.12,
   /** 各页面类型的标签文字 */
@@ -206,9 +208,9 @@ export const bannerConfig = {
   /** 说说页打字动画内容 */
   talkTicker: {
     sequence: [
-      "upxuu的碎碎念~",
+      "xxx",
       2500,
-      "LIFE AND STUDY",
+      "xxx",
       2500,
     ],
   },
@@ -219,9 +221,9 @@ export const bannerConfig = {
  */
 export const subtitleConfig = {
   sequence: [
-    "HI I AM UPXUU",
+    "你好👋 我是Ker ZJZ~ 技术[Web/AI]・艺术与文化[钢琴/设计]・游戏[Minecraft]・经济 现在关注，就是老粉啦~ 感谢关注！",
     2500,
-    "UPXUU AND YOU",
+    "xxx",
     2500,
   ],
 };
@@ -263,17 +265,17 @@ export const contentConfig = {
     /** 许可协议链接 */
     url: "/about",
   },
-  /** AI 摘要模型列表（url 为完整请求地址） */
+  /** AI 摘要模型列表（url 为完整请求地址）[Todo：用cf 20260730] */
   aiSummaryModels: [
-    { id: 'gpt-oss', name: 'GPT-OSS-120B', url: 'https://blogapi.upxuu.com/summarize', hasThinking: false },
-    { id: 'gemma', name: 'Gemma-4-31b-it (OpenRouter)', url: 'https://blogapi.upxuu.com/summarize2', hasThinking: true },
-    { id: 'deepseek-r1', name: 'DeepSeek-R1', url: 'https://blogapi.upxuu.com/summarize3', hasThinking: true },
+    { id: 'gpt-oss', name: 'GPT-OSS-120B', url: 'xxx', hasThinking: false },
+    { id: 'gemma', name: 'Gemma-4-31b-it (OpenRouter)', url: 'xxx', hasThinking: true },
+    { id: 'deepseek-r1', name: 'DeepSeek-R1', url: 'xxx', hasThinking: true },
   ],
   /** AI 对话模型列表（url 为完整请求地址） */
   aiChatModels: [
-    { id: 'gpt-oss', name: 'GPT-OSS-120B', url: 'https://blogapi.upxuu.com/chat', hasThinking: false },
-    { id: 'gemma', name: 'Gemma-4-31b-it (OpenRouter)', url: 'https://blogapi.upxuu.com/chat2', hasThinking: true },
-    { id: 'deepseek-r1', name: 'DeepSeek-R1', url: 'https://blogapi.upxuu.com/chat3', hasThinking: true },
+    { id: 'gpt-oss', name: 'GPT-OSS-120B', url: 'xxx', hasThinking: false },
+    { id: 'gemma', name: 'Gemma-4-31b-it (OpenRouter)', url: 'xxx', hasThinking: true },
+    { id: 'deepseek-r1', name: 'DeepSeek-R1', url: 'xxx', hasThinking: true },
   ],
 };
 
@@ -284,34 +286,36 @@ export const aboutConfig = {
   /** 关于页浏览器标题 */
   title: "关于我",
   /** 关于页 SEO 描述 */
-  description: "UpXuu的个人介绍、独立开发者履历与前端技术栈栈架构建。",
+  description: "Ker ZJZ",
   /** 角色标签 */
   role: "前端开发者 / 独立创作者",
   /** 简介文字（{author} 会被替换为 siteConfig.author） */
-  intro: `你好，世界！我是 ${siteConfig.author}-(ljx)。一个在sb河北上学的cs\n目前专注于学习前端 Python（其实是上学罢了） 热爱分享，持续折腾（hardly）。`,
-  /** 技能标签列表 */
+  intro: `你好👋 我是Ker ZJZ~ 技术[Web/AI]・艺术与文化[钢琴/设计]・游戏[Minecraft]・经济 现在关注，就是老粉啦~ 感谢关注！`,
+  /** 技能标签列表（累了 直接复制readme） */
   skills: [
     "React", "TypeScript", "Node.js", "Astro", "Tailwind CSS",
     "Next.js", "Vue", "Vite", "Git", "Figma",
   ],
   /** GitHub 介绍文字 */
-  githubBio: "HI I am UpXuu. A developer, student, simple people from HeBei, China.",
+  githubBio: "xxx",
   /** Bilibili 板块标题 */
-  bilibiliTitle: "MY bilibili @UPXUU",
+  bilibiliTitle: "MY bilibili @Ker_ZJZ",
   /** GitHub 仓库链接（关于页"找到我"区块） */
-  githubLink: "https://github.com/Imupxuu",
-  /** GitHub 显示文字 */
+  githubLink: "https://github.com/kerzjz",
+  /** GitHub 显示文字（？我没看懂 先不改） */
   githubValue: "@ImUpXuu\nupxuu",
   /** 邮箱显示文字 */
-  emailValue: "ME@UPXUU.COM",
+  emailValue: "KERZJZ@OUTLOOK.COM",
   /** 邮箱链接 */
-  emailLink: "mailto:ME@UPXUU.COM",
-  /** 微信显示文字 */
-  wechatValue: "@imljxu",
+  emailLink: "mailto:KERZJZ@OUTLOOK.COM",
+  /** 微信显示文字 
+  wechatValue: "@xxx",
+  */
+  `
   /** QQ 显示文字 */
-  qqValue: "3697773416",
+  qqValue: "3869843633",
   /** GitHub Socials 区块的邮箱链接 */
-  socialEmailLink: "mailto:me@upxuu.com",
+  socialEmailLink: "mailto:kerzjz@outlook.com",
 };
 
 /**
@@ -340,9 +344,9 @@ export const i18nConfig = {
   /** 首页 */
   home: {
     /** 首页浏览器标题（传给 Layout 的 title） */
-    title: "UPXUU的博客",
+    title: "Ker ZJZ",
     /** 首页 SEO 描述 */
-    description: "UpXuu 的个人博客，分享 Web 开发、Astro 建站与开源项目实践的技术文章，以及一名初中生的日常随笔与生活思考。原创内容覆盖前端开发、Vite 生态、AI 应用与中考纪实，适合开发者与年轻创作者阅读。",
+    description: "Ker ZJZ",
     /** 首页文章列表区块标题 */
     sectionTitle: "最新文章",
   },
@@ -353,7 +357,7 @@ export const i18nConfig = {
     /** 说说页区块标题 */
     sectionTitle: "说说",
     /** 说说列表页 SEO 描述 */
-    description: "UpXuu 的说说微动态——生活碎碎念、随手记录与日常分享。",
+    description: "说说",
   },
   /** 说说详情页 */
   talk: {
@@ -377,15 +381,15 @@ export const i18nConfig = {
   /** 友链页面 */
   friends: {
     title: "友情链接",
-    description: "UpXuu的友情链接，汇集各路神仙的有趣博客、个人小站。",
+    description: "友情链接",
   },
-  /** 隐私政策页面 */
+  /** 隐私政策页面（看着怪怪的） */
   privacy: {
     title: "隐私政策",
-    description: "UpXuu 博客的隐私政策——我们如何收集、使用和保护你的个人信息。",
-    lastUpdated: "2026 年 6 月 28 日",
-    effectiveDate: "2026 年 6 月 28 日",
-    contactEmail: "me@upxuu.com",
+    description: "隐私政策——我们如何收集、使用和保护你的个人信息。",
+    lastUpdated: "2026 年 x 月 x 日",
+    effectiveDate: "2026 年 x 月 x 日",
+    contactEmail: "kerzjz@outlook.com",
   },
   /** 统计页面 */
   stats: {
