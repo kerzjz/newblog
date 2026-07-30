@@ -54,6 +54,10 @@ export const siteConfig = {
   ],
 };
 
+// 兼容旧项目 info.ts 所需导出
+export const bannerConfig = {};
+export const subtitleConfig = {};
+
 // ===================== 预处理Waline 避免对象内部直接运算引发Astro构建异常 =====================
 let walineDnsPrefetch: string[] = [];
 let walinePreconnect: Array<{ url: string; crossOrigin: string }> = [];
