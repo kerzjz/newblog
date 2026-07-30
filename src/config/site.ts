@@ -37,7 +37,7 @@ export const siteConfig = {
     wechat: "@imljxu",
     qq: "3869843633",
     /** QQ群链接（欢迎提示中使用） */
-    qqGroup: "",
+    qqGroup: "https://q.com",
     /** 订阅链接（欢迎提示中的"订阅"按钮，指向 GitHub Issues 等） */
     subscribe: "https://github.com/kerzjz/kerzjz.github.io/issues",
   },
@@ -45,13 +45,14 @@ export const siteConfig = {
   /** 评论系统配置 */
   waline: {
     /** Waline 服务端地址 */
-    serverURL: 'https://',
+    serverURL: 'https://example.com',
   },
 
   /** 访问统计 — Umami（可配多个实例，留空数组则不加载） */
   analytics: {
     umami: [
-      { src: "https://", id: "xxx" },
+      // 未配置时清空数组，避免无效URL
+      // { src: "https://", id: "xxx" },
     ],
     /** 站点统计 API（页脚访问量/在线人数、欢迎提示调用） */
     statsApi: {
@@ -70,8 +71,10 @@ export const siteConfig = {
     favicon: "/images/me.jpg",
   },
 
-  /** 站点运行起始时间（页脚"已在互联网中航行"计时器用） */
-  startTime: new Date(2026, 7, 30, 16, 0, 0),
+  /** 站点运行起始时间（页脚"已在互联网中航行"计时器用）
+   * ⚠️JS月份从0开始：6 = 7月，7 = 8月
+   */
+  startTime: new Date(2026, 6, 30, 16, 0, 0),
 
   /** 外部链接安全配置 — 可信域名（点击这些域名的外链不弹确认框） */
   trustedDomains: [
@@ -176,15 +179,23 @@ export const seoConfig = {
     creator: "@xxx",
   },
   */
-  /** DNS 预解析域名列表 */
+  /** DNS 预解析域名列表（增加URL合法性判断，构建不会崩溃） */
   dnsPrefetch: [
     "//f.xxu6.top",
-    "//" + new URL(siteConfig.waline.serverURL).host,
+    ...(
+      siteConfig.waline.serverURL && siteConfig.waline.serverURL.startsWith("http")
+        ? ["//" + new URL(siteConfig.waline.serverURL).host]
+        : []
+    ),
   ],
   /** 预连接资源列表 */
   preconnect: [
     { url: "https://f.xxu6.top", crossOrigin: "anonymous" },
-    { url: siteConfig.waline.serverURL, crossOrigin: "anonymous" },
+    ...(
+      siteConfig.waline.serverURL && siteConfig.waline.serverURL.startsWith("http")
+        ? [{ url: siteConfig.waline.serverURL, crossOrigin: "anonymous" }]
+        : []
+    ),
   ],
   /** robots meta 内容 */
   robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
