@@ -13,7 +13,7 @@ export const siteConfig = {
   /** 作者名 */
   author: "Ker ZJZ",
   /** 站点 URL（影响 Canonical、Sitemap、OG、RSS 等所有绝对链接） */
-  url: "https://", // Base URL of the site
+  url: "https://kerzjz.qzz.io", // Base URL of the site
   /** 作者头像 URL（导航栏、关于页、AuthorCard 等处使用） */
   avatar: "https://cdn-us.imgs.moe/2026/01/17/a88d8365565406c0202ca8bad0560bd4.png",
   /** 作者签名/座右铭（显示在 AuthorCard 侧边栏） */
@@ -71,7 +71,7 @@ export const siteConfig = {
   },
 
   /** 站点运行起始时间（页脚"已在互联网中航行"计时器用） */
-  startTime: new Date(yyyy, m, dd, hh, mm, s),
+  startTime: new Date(2026, 7, 30, 16, 00, 0),
 
   /** 外部链接安全配置 — 可信域名（点击这些域名的外链不弹确认框） */
   trustedDomains: [
