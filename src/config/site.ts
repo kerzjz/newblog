@@ -18,6 +18,11 @@ export const siteConfig = {
   avatar: "https://cdn-us.imgs.moe/2026/01/17/a88d8365565406c0202ca8bad0560bd4.png",
   /** 作者签名/座右铭（显示在 AuthorCard 侧边栏） */
   signature: "Stay hungry, stay foolish.",
+   umami: {
+    enabled: false,
+    scriptUrl: "",
+    websiteId: "",
+  },
 
   /** 社交链接（AuthorCard、关于页、页脚等处使用） */
   socials: {
@@ -61,7 +66,7 @@ export const siteConfig = {
   /** 站点运行起始时间（页脚"已在互联网中航行"计时器用）
    * ⚠️ JS Date月份从0开始：7 = 8月，如需9月30日改为 8
    */
-  startTime: new Date(2026, 7, 30, 16, 0, 0),
+  startTime: new Date(2026, 6, 30, 16, 0, 0),
 
   /** 外部链接安全配置 — 可信域名（点击这些域名的外链不弹确认框） */
   trustedDomains: [
