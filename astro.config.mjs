@@ -14,7 +14,7 @@ export default defineConfig({
   output: 'static',
   outDir: 'dist',
   integrations: [react(), svelte(), mdx()],
-  site: 'https://upxuu.com',
+  site: 'https://kerzjz.qzz.io',
   redirects: {
     '/talk': {
       destination: '/talks',
