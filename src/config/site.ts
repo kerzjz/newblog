@@ -7,23 +7,17 @@ export const siteConfig = {
   /** 站点标题（显示在导航栏和浏览器标题中） */
   title: "Ker ZJZ",
   /** 站点副标题（用 "/" 分隔多句，首页打字动画会轮流展示） */
-  subtitle: "HI I AM Ker ZJZ / Ker ZJZ AND YOU",
+  subtitle: "HI I AM KERZJZ / KZ AND YOU",
   /** 站点描述（用于 SEO 和社交分享） */
-  description: "Ker ZJZ's personal blog and portfolio",
+  description: "Ker ZJZ",
   /** 作者名 */
   author: "Ker ZJZ",
   /** 站点 URL（影响 Canonical、Sitemap、OG、RSS 等所有绝对链接） */
-  url: "https://kerzjz.qzz.io",
+  url: "https://kerzjz.qzz.io", // Base URL of the site
   /** 作者头像 URL（导航栏、关于页、AuthorCard 等处使用） */
   avatar: "https://cdn-us.imgs.moe/2026/01/17/a88d8365565406c0202ca8bad0560bd4.png",
   /** 作者签名/座右铭（显示在 AuthorCard 侧边栏） */
-  signature: "Stay hungry, stay foolish.",
-  
-  umami: {
-    enabled: false,
-    scriptUrl: "",
-    websiteId: "",
-  },
+  signature: "Stay hungry, stay foolish. ",
 
   /** 社交链接（AuthorCard、关于页、页脚等处使用） */
   socials: {
@@ -34,24 +28,27 @@ export const siteConfig = {
     /** Bilibili mid（关于页拉取视频列表用） */
     bilibiliMid: "3546746017810685",
     /** AuthorCard 上显示的 Bilibili 文字 */
-    bilibiliDisplayName: "Ker ZJZ",
+    bilibiliDisplayName: "Ker_ZJZ",
     email: "kerzjz@outlook.com",
     website: "https://kerzjz.qzz.io",
+    /** 关于页额外社交链接 */
     qq: "3869843633",
-    /** 订阅链接（欢迎提示中的"订阅"按钮，指向 GitHub Issues 等） */
+    /** QQ群链接（欢迎提示中使用） */
+        /** 订阅链接（欢迎提示中的"订阅"按钮，指向 GitHub Issues 等） */
     subscribe: "https://github.com/kerzjz/kerzjz.github.io/issues",
   },
 
-  /** 评论系统配置 */
-  waline: {
-    /** Waline 服务端地址，上线前替换为真实地址 */
-    serverURL: 'https://example.com',
-  },
 
-  /** 站点统计 API（页脚访问量/在线人数、欢迎提示调用） */
-  statsApi: {
-    alltime: 'https://blogapi.476543.xyz/statsapi/alltime',
-    active: 'https://blogapi.476543.xyz/api/active',
+  /** 访问统计 — Umami（可配多个实例，留空数组则不加载） */
+  analytics: {
+    umami: [
+      { src: "https://cloud.umami.is/script.js", id: "e0312402-c63e-47b2-ba66-e4a7ab208eef" },
+    ],
+    /** 站点统计 API（页脚访问量/在线人数、欢迎提示调用） */
+    statsApi: {
+      alltime: 'https://blogapi.476543.xyz/statsapi/alltime',
+      active: 'https://blogapi.476543.xyz/api/active',
+    },
   },
 
   /** 图片 CDN / 默认封面 */
@@ -61,13 +58,11 @@ export const siteConfig = {
     /** 随机图服务地址（当文章无封面时 fallback 使用） */
     randomImage: "https://bing.img.run/rand.php",
     /** 站点 favicon 路径（相对站点根目录） */
-    favicon: "/images/me.jpg",
+    favicon: "/images/me.png",
   },
 
-  /** 站点运行起始时间（页脚"已在互联网中航行"计时器用）
-   * ⚠️ JS Date月份从0开始：7 = 8月，如需9月30日改为 8
-   */
-  startTime: new Date(2026, 6, 30, 16, 0, 0),
+  /** 站点运行起始时间（页脚"已在互联网中航行"计时器用） */
+  startTime: new Date(2026, 6, 31, 8, 40, 0),
 
   /** 外部链接安全配置 — 可信域名（点击这些域名的外链不弹确认框） */
   trustedDomains: [
@@ -119,9 +114,7 @@ export const navConfig: {
   /** 外部链接项（桌面端"更多"下拉 + 移动端汉堡菜单底部） */
   external: [
     { name: "开往", href: "https://www.travellings.cn/go.html", external: true },
-    // { name: "服务状态", href: "https://status.xxx.com/status/1", external: true },
-    // 如需QQ群链接，在siteConfig.socials添加 qqGroup:"群链接"后再启用
-    // { name: "QQ群", href: siteConfig.socials.qqGroup, external: true },
+    { name: "服务状态", href: "https://up.upxuu.com/status/1", external: true },
   ],
 };
 
@@ -130,7 +123,7 @@ export const navConfig: {
  */
 export const footerConfig = {
   /** 版权文字 */
-  copyrightText: "© 2026 Ker ZJZ. All Rights Reserved.",
+  copyrightText: "© 2026 Ker ZJZ. All Rights Reserved. ",
   /** ICP 备案信息（留空则不显示） */
   icp: {
     text: "萌 ICP 备 20259426 号",
@@ -148,7 +141,7 @@ export const footerConfig = {
   /** 页脚开源仓库链接 */
   repoUrl: "https://github.com/ImUpXuu/xuhome",
   /** 页脚开源仓库显示名 */
-  repoDisplayName: "IMUpXuu/XUHOME",
+  repoDisplayName: "IMUPXUU/XUHOME",
 };
 
 /**
@@ -156,31 +149,15 @@ export const footerConfig = {
  */
 export const seoConfig = {
   /** 默认页面标题（无 title 时使用） */
-  defaultTitle: "Ker ZJZ's blog",
+  defaultTitle: "Ker ZJZ",
   /** 标题后缀（拼接到每个页面 title 之后） */
-  titleTemplate: " - Ker ZJZ's blog",
+  titleTemplate: " - Ker ZJZ",
   /** 默认页面描述 */
   defaultDescription: "Ker ZJZ",
   /** 默认 OG 图片 URL */
-  defaultImage: "https://kerzjz.qzz.io/images/me.jpg",
+  defaultImage: "https://cdn-us.imgs.moe/2026/01/17/a88d8365565406c0202ca8bad0560bd4.png",
   /** SEO 关键词 */
-  keywords: ["Ker ZJZ", "blog", "开发者", "生活", "学习", "技术分享", "Ker ZJZ的碎碎念"],
-  /** Twitter Card 配置 */
-  twitter: {
-    card: "summary_large_image",
-    site: "@ImKerZJZ",
-    creator: "@ImKerZJZ",
-  },
-  /** DNS 预解析域名列表 */
-  dnsPrefetch: [
-    "//f.xxu6.top",
-    "//" + new URL(siteConfig.waline.serverURL).host,
-  ],
-  /** 预连接资源列表 */
-  preconnect: [
-    { url: "https://f.xxu6.top", crossOrigin: "anonymous" },
-    { url: siteConfig.waline.serverURL, crossOrigin: "anonymous" },
-  ],
+  keywords: ["Ker ZJZ", "blog", "科技", "艺术与文化", "经济"],
   /** robots meta 内容 */
   robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
 };
@@ -203,9 +180,9 @@ export const bannerConfig = {
   /** 说说页打字动画内容 */
   talkTicker: {
     sequence: [
-      "Ker ZJZ的碎碎念~",
+      "Ker ZJZ",
       2500,
-      "LIFE AND STUDY",
+      "TECH | ART&CULTURE | ECONOMICS",
       2500,
     ],
   },
@@ -218,7 +195,7 @@ export const subtitleConfig = {
   sequence: [
     "HI I AM Ker ZJZ",
     2500,
-    "Ker ZJZ AND YOU",
+    "KZ AND YOU",
     2500,
   ],
 };
@@ -240,7 +217,7 @@ export const welcomeConfig = {
   /** 提示中的快捷链接 */
   quickLinks: [
     { name: "订阅", href: siteConfig.socials.subscribe, color: "green" },
-    { name: "RSS", href: `${siteConfig.url}/rss.xml`, action: "copyRss", color: "orange" },
+    { name: "RSS", href: "", action: "copyRss", color: "orange" },
   ],
 };
 
@@ -259,11 +236,17 @@ export const contentConfig = {
     /** 许可协议链接 */
     url: "/about",
   },
+  /** AI 摘要模型列表（url 为完整请求地址） */
+  aiSummaryModels: [
+    { id: 'gpt-oss', name: 'GPT-OSS-120B', url: 'https://blogapi.upxuu.com/summarize', hasThinking: false },
+    { id: 'gemma', name: 'Gemma-4-31b-it (OpenRouter)', url: 'https://blogapi.upxuu.com/summarize2', hasThinking: true },
+    { id: 'deepseek-r1', name: 'DeepSeek-R1', url: 'https://blogapi.upxuu.com/summarize3', hasThinking: true },
+  ],
   /** AI 对话模型列表（url 为完整请求地址） */
   aiChatModels: [
-    { id: 'gpt-oss', name: 'GPT-OSS-120B', url: 'https://blogapi.KerZJZ.com/chat', hasThinking: false },
-    { id: 'gemma', name: 'Gemma-4-31b-it (OpenRouter)', url: 'https://blogapi.KerZJZ.com/chat2', hasThinking: true },
-    { id: 'deepseek-r1', name: 'DeepSeek-R1', url: 'https://blogapi.KerZJZ.com/chat3', hasThinking: true },
+    { id: 'gpt-oss', name: 'GPT-OSS-120B', url: 'https://blogapi.upxuu.com/chat', hasThinking: false },
+    { id: 'gemma', name: 'Gemma-4-31b-it (OpenRouter)', url: 'https://blogapi.upxuu.com/chat2', hasThinking: true },
+    { id: 'deepseek-r1', name: 'DeepSeek-R1', url: 'https://blogapi.upxuu.com/chat3', hasThinking: true },
   ],
 };
 
@@ -278,20 +261,19 @@ export const aboutConfig = {
   /** 角色标签 */
   role: "前端开发者 / 独立创作者",
   /** 简介文字（{author} 会被替换为 siteConfig.author） */
-  intro: `你好，世界！`,
+  intro: `你好，世界！我是 ${siteConfig.author}。`,
   /** 技能标签列表 */
   skills: [
-    "React", "TypeScript", "Node.js", "Astro", "Tailwind CSS",
-    "Next.js", "Vue", "Vite", "Git", "Figma",
-  ],
+    "CSS3", "HTML5", "JavaScript", "Markdown", "Python", "Cloudflare", "NPM", "GitHub Actions", "Git", "GitHub"
+],
   /** GitHub 介绍文字 */
-  githubBio: "HI I am Ker ZJZ. A developer, student, simple people from HeBei, China.",
+  githubBio: "Tech[Web/AI]・Art&Culture[Piano/Design]・Game[Minecraft]・Economics",
   /** Bilibili 板块标题 */
   bilibiliTitle: "MY bilibili @Ker ZJZ",
   /** GitHub 仓库链接（关于页"找到我"区块） */
-  githubLink: "https://github.com/ImKerZJZ",
+  githubLink: "https://github.com/kerzjz",
   /** GitHub 显示文字 */
-  githubValue: "@Ker ZJZ\nKer ZJZ",
+  githubValue: "@Ker ZJZ\nkerzjz",
   /** 邮箱显示文字 */
   emailValue: "KERZJZ@OUTLOOK.COM",
   /** 邮箱链接 */
@@ -299,7 +281,7 @@ export const aboutConfig = {
   /** QQ 显示文字 */
   qqValue: "3869843633",
   /** GitHub Socials 区块的邮箱链接 */
-  socialEmailLink: "mailto:KERZJZ@OUTLOOK.COM",
+  socialEmailLink: "mailto:kerzjz@outlook.com",
 };
 
 /**
@@ -341,7 +323,7 @@ export const i18nConfig = {
     /** 说说页区块标题 */
     sectionTitle: "说说",
     /** 说说列表页 SEO 描述 */
-    description: "Ker ZJZ 的说说微动态——生活碎碎念、随手记录与日常分享。",
+    description: "Ker ZJZ 的说说",
   },
   /** 说说详情页 */
   talk: {
@@ -365,14 +347,14 @@ export const i18nConfig = {
   /** 友链页面 */
   friends: {
     title: "友情链接",
-    description: "Ker ZJZ的友情链接",
+    description: "友情链接",
   },
   /** 隐私政策页面 */
   privacy: {
     title: "隐私政策",
-    description: "Ker ZJZ 博客的隐私政策——我们如何收集、使用和保护你的个人信息。",
-    lastUpdated: "2026 年 6 月 28 日",
-    effectiveDate: "2026 年 6 月 28 日",
+    description: "Ker ZJZ 的隐私政策——我们如何收集、使用和保护你的个人信息。",
+    lastUpdated: "2026 年 7 月 30 日",
+    effectiveDate: "2026 年 7 月 30 日",
     contactEmail: "kerzjz@outlook.com",
   },
   /** 统计页面 */
