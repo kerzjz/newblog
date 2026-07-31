@@ -100,7 +100,6 @@ export const navConfig: {
     { name: "友链", href: "/friends" },
     { name: "关于", href: "/about" },
     { name: "归档", href: "/archive" },
-    { name: "统计", href: "/stats" },
     { name: "标签", href: "/tags" },
   ],
   /** 移动端汉堡菜单中的额外项 */
@@ -108,14 +107,11 @@ export const navConfig: {
     { name: "友链", href: "/friends" },
     { name: "关于", href: "/about" },
     { name: "归档页面", href: "/archive" },
-    { name: "网站统计", href: "/stats" },
     { name: "标签", href: "/tags" },
   ],
 /** 外部链接项（桌面端"更多"下拉 + 移动端汉堡菜单底部） */
   external: [
-    { name: "开往", href: "https://www.travellings.cn/go.html", external: true },
     { name: "Github", href: "https://github.com/kerzjz", external: true },
-    { name: "Github1", href: "https://github.com/kerzjz", external: true },
   ],
 };
 
@@ -137,7 +133,7 @@ export const footerConfig = {
     { name: "Sitemap", path: "/sitemap.xml", external: true },
   ],
   /** 页脚开源仓库文字 */
-  repoText: "本站已开源 ",
+  repoText: "模版 ",
   /** 页脚开源仓库链接 */
   repoUrl: "https://github.com/ImUpXuu/xuhome",
   /** 页脚开源仓库显示名 */
