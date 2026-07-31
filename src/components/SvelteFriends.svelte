@@ -29,7 +29,7 @@
   }
 
   function copyTemplate() {
-    const text = `=== 友链申请信息 ===\n名称: UpXuu's blog\n链接: https://upxuu.com\n头像: https://upxuu.com/images/me.jpg\n介绍: 逐光而上\n====================`;
+    const text = `=== 友链申请信息 ===\n名称: Ker ZJZ\n链接: https://kerzjz.qzz.io\n头像: https://kerzjz.qzz.io/images/me.png\n介绍: 逐光而上\n====================`;
     copyText(text, "全部");
   }
 
@@ -203,12 +203,12 @@
           </div>
           <p class="text-xs text-slate-400">
             添加完毕后，可以通过下方 GitHub Issue 快速申请，或发邮件联系：
-            <a href="mailto:upxuu6@gmail.com" class="text-[#0284c7] hover:underline font-bold ml-1">
-              upxuu6@gmail.com
+            <a href="mailto:kerzjz@outlook.com" class="text-[#0284c7] hover:underline font-bold ml-1">
+              kerzjz@outlook.com
             </a>
           </p>
           <a 
-            href="https://github.com/ImUpXuu/xuhome/issues/new?template=friend-request.yml" 
+            href="https://github.com/kerzjz/newblog/issues/new?template=friend-request.yml" 
             target="_blank" 
             rel="noopener noreferrer"
             class="inline-block px-4 py-2 bg-[#0284c7] text-white font-black text-xs rounded-sm hover:bg-[#0ea5e9] transition-all"
@@ -224,17 +224,17 @@
           </span>
           
           <ul class="space-y-1.5 text-xs text-slate-600 list-none leading-loose">
-            <li on:click={() => copyText("UpXuu's blog", "站点名称")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
-              <strong class="text-slate-800">站点名称：</strong> UpXuu's blog
+            <li on:click={() => copyText("Ker ZJZ", "站点名称")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
+              <strong class="text-slate-800">站点名称：</strong> Ker ZJZ
             </li>
-            <li on:click={() => copyText("https://upxuu.com", "站点域名")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
-              <strong class="text-slate-800">站点域名：</strong> https://upxuu.com
+            <li on:click={() => copyText("https://kerzjz.qzz.io", "站点域名")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
+              <strong class="text-slate-800">站点域名：</strong> https://kerzjz.qzz.io
             </li>
-            <li on:click={() => copyText("https://upxuu.com/images/me.jpg", "站点头像")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
-              <strong class="text-slate-800">站点头像：</strong> https://upxuu.com/images/me.jpg
+            <li on:click={() => copyText("https://kerzjz.qzz.io/images/me.png", "站点头像")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
+              <strong class="text-slate-800">站点头像：</strong> https://kerzjz.qzz.io/images/me.png
             </li>
-            <li on:click={() => copyText("逐光而上", "站点简介")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
-              <strong class="text-slate-800">站点简介：</strong> 逐光而上
+            <li on:click={() => copyText("Stay hungry, stay foolish. ", "站点简介")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
+              <strong class="text-slate-800">站点简介：</strong> Stay hungry, stay foolish. 
             </li>
           </ul>
 
