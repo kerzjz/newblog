@@ -111,12 +111,10 @@ export const navConfig: {
     { name: "网站统计", href: "/stats" },
     { name: "标签", href: "/tags" },
   ],
-  /** 外部链接项（桌面端"更多"下拉 + 移动端汉堡菜单底部） */
+/** 外部链接项（桌面端"更多"下拉 + 移动端汉堡菜单底部） */
   external: [
-    { name: "开往", href: "https://www.travellings.cn/go.html", external: true },
-    { name: "服务状态", href: "https://up.upxuu.com/status/1", external: true },
   ],
-};
+};      
 
 /**
  * 页脚配置
@@ -134,7 +132,6 @@ export const footerConfig = {
     { name: "友情链接", path: "/friends", external: false },
     { name: "RSS", path: "/rss.xml", external: true },
     { name: "Sitemap", path: "/sitemap.xml", external: true },
-    { name: "隐私政策", path: "/privacy", external: false },
   ],
   /** 页脚开源仓库文字 */
   repoText: "本站已开源 ",
