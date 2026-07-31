@@ -1,39 +1,38 @@
 import { useEffect, useRef } from 'react';
-import { init } from '@waline/client';
-import '@waline/client/waline.css';
-import { siteConfig } from '../config/site';
 
 export function WalineComment() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const walineInstanceConfig = useRef<any>(null);
+  const scriptRef = useRef<HTMLScriptElement | null>(null);
 
   useEffect(() => {
-    const handleRejection = (e: PromiseRejectionEvent) => {
-      if (e.reason && e.reason.message === 'Failed to fetch') {
-        // Prevent Waline fetch errors from bubbling up to the error overlay
-        e.preventDefault();
-        console.warn('Waline fetch failed globally intercepted.');
-      }
-    };
-    window.addEventListener('unhandledrejection', handleRejection);
+    if (!containerRef.current) return;
+    const container = containerRef.current;
+    container.innerHTML = '';
+    scriptRef.current = null;
 
-    if (containerRef.current) {
-      let p = window.location.pathname.replace(/\/+/g, '/');
-      if (!p.endsWith('/')) p += '/';
-      walineInstanceConfig.current = init({
-        el: containerRef.current,
-        serverURL: siteConfig.waline.serverURL,
-        path: p,
-        dark: 'html.dark',
-        search: false,
-        imageUploader: false,
-        placeholder: '写几个字证明你来过~',
-      });
-    }
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.crossOrigin = 'anonymous';
+    script.async = true;
+
+    // 你现成的完整配置
+    script.setAttribute('data-repo', 'kerzjz/newblog');
+    script.setAttribute('data-repo-id', 'R_kgDOToBa3A');
+    script.setAttribute('data-category', 'Announcements');
+    script.setAttribute('data-category-id', 'DIC_kwDOToBa3M4DCWsk');
+    script.setAttribute('data-mapping', 'pathname');
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'bottom');
+    script.setAttribute('data-theme', 'preferred_color_scheme');
+    script.setAttribute('data-lang', 'zh-CN');
+
+    container.appendChild(script);
+    scriptRef.current = script;
 
     return () => {
-      walineInstanceConfig.current?.destroy();
-      window.removeEventListener('unhandledrejection', handleRejection);
+      scriptRef.current?.remove();
     };
   }, []);
 
@@ -45,7 +44,7 @@ export function WalineComment() {
       </h3>
       <div ref={containerRef} />
       <p className="text-[10px] sm:text-xs text-slate-400 dark:text-slate-500 text-center mt-3 font-medium">
-        （因不知名因素，海外IP暂时无法加载评论，请关闭代理）
+        评论需要登录 GitHub 账号
       </p>
     </div>
   );
