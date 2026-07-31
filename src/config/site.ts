@@ -109,9 +109,11 @@ export const navConfig: {
     { name: "归档页面", href: "/archive" },
     { name: "标签", href: "/tags" },
   ],
-/** 外部链接项（桌面端"更多"下拉 + 移动端汉堡菜单底部） */
+  /** 外部链接项（桌面端"更多"下拉 + 移动端汉堡菜单底部） */
   external: [
     { name: "Github", href: "https://github.com/kerzjz", external: true },
+    { name: "Bilibili", href: "https://space.bilibili.com/3546746017810685", external: true },
+    { name: "邮件", href: "mailto:kerzjz@outlook.com", external: true },
   ],
 };
 
