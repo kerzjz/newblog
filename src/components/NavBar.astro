@@ -333,11 +333,7 @@ const isArchivePage = pathname === '/archive';
 
   function updateThemeUI(dark) {
     const label = document.getElementById('mobile-dark-mode-label');
-    const sun = document.getElementById('dark-mode-sun');
-    const moon = document.getElementById('dark-mode-moon');
     if (label) label.textContent = dark ? lightModeText : darkModeText;
-    if (sun) sun.classList.toggle('hidden', !dark);
-    if (moon) moon.classList.toggle('hidden', dark);
   }
 
   function isDarkTheme() {
@@ -345,7 +341,6 @@ const isArchivePage = pathname === '/archive';
   }
 
   // Sync theme: restore from localStorage first, then update UI
-  // Astro View Transitions can strip the dark class from <html>, so we force it back
   function initThemeUI() {
     try {
       const saved = localStorage.getItem('theme');
@@ -358,7 +353,7 @@ const isArchivePage = pathname === '/archive';
     updateThemeUI(isDarkTheme());
   }
 
-  // Bind theme toggle once globally — use document (not body) so it survives view transitions
+  // Bind theme toggle once globally
   if (!window.__themeToggleBound) {
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-theme-toggle]');
@@ -370,7 +365,7 @@ const isArchivePage = pathname === '/archive';
     window.__themeToggleBound = true;
   }
 
-  // Bind navbar interactions once globally — use document for all listeners
+  // Bind navbar interactions once globally
   if (!window.__navBarBound) {
     // Desktop more dropdown
     document.addEventListener('click', (e) => {
@@ -430,6 +425,14 @@ const isArchivePage = pathname === '/archive';
         mobileSearchToggle.classList.remove('bg-[#fde68a]');
         mobileSearchToggle.classList.add('bg-[rgba(250,248,245,0.55)]');
       } else {
+        closeNavDropdowns();
         mobileSearchDialog.classList.remove('hidden');
         mobileSearchToggle.classList.add('bg-[#fde68a]');
-        mobileSearchToggle.classList.remove('bg-[rgba(250,248,2
+        mobileSearchToggle.classList.remove('bg-[rgba(250,248,245,0.55)]');
+        setTimeout(() => mobileSearchInput?.focus(), 50);
+      }
+    });
+    window.__navBarBound = true;
+  }
+
+  initThemeUI();
