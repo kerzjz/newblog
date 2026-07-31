@@ -9,8 +9,8 @@ import { welcomeConfig, siteConfig } from '../config/site';
     duration: 5000,
     weatherApi: "https://uapis.cn/api/v1/misc/weather",
     fallbackMessage: "Hi！远方的朋友",
-    qqGroup: "https://qm.qq.com/q/f5pcXQqVL",
-    subscribe: "https://blog.upxuu.com/rss.xml",
+    // qqGroup 配置移除
+    subscribe: "https://kerzjz.qzz.io/rss.xml",
     statsApi: "https://blogapi.476543.xyz/statsapi/alltime"
   };
   var VISIT_SESSION_KEY = CFG.sessionKey;
@@ -26,7 +26,7 @@ import { welcomeConfig, siteConfig } from '../config/site';
     toast.innerHTML = [
       '<div class="bg-[rgba(250,248,245,0.55)] dark:bg-slate-800 border-2 border-[#0284c7] shadow-[4px_4px_0px_0px_#0284c7] rounded-sm p-2 sm:p-0">',
       '  <div class="bg-green-500 text-white text-[10px] sm:text-xs font-black text-center px-2 py-1.5 rounded-sm mb-1.5">',
-      '    本站唯一域名 UPXUU.COM',
+      '    本站唯一域名 KERZJZ.QZZ.IO',
       '  </div>',
       '  <div class="flex flex-wrap items-center gap-x-2 gap-y-1 px-2 sm:px-3 py-1.5 sm:py-0 sm:h-9">',
       '    <span class="text-xs font-black text-[#0284c7]">👋</span>',
@@ -34,8 +34,7 @@ import { welcomeConfig, siteConfig } from '../config/site';
       '    <span class="text-slate-300 dark:text-slate-600 text-xs font-black hidden sm:inline">|</span>',
       '    <span id="welcome-stats" class="text-xs font-bold text-slate-500 dark:text-slate-400"></span>',
       '    <div class="flex items-center gap-1.5 ml-auto sm:ml-1 shrink-0">',
-      '      <a href="' + CFG.qqGroup + '" target="_blank" rel="noopener noreferrer" class="text-[10px] font-black text-blue-500 hover:text-[#0284c7] dark:hover:text-blue-400 transition-colors shrink-0 uppercase tracking-wider">QQ群</a>',
-      '      <span class="text-slate-300 dark:text-slate-600 text-[10px] font-black">|</span>',
+      // 已删除 QQ群 链接、分隔符
       '      <a href="' + CFG.subscribe + '" class="text-[10px] font-black text-green-500 hover:text-[#0284c7] dark:hover:text-green-400 transition-colors shrink-0 uppercase tracking-wider">订阅</a>',
       '      <span class="text-slate-300 dark:text-slate-600 text-[10px] font-black">|</span>',
       '      <a href="javascript:void(0)" class="js-copy-rss text-[10px] font-black text-orange-500 hover:text-[#0284c7] dark:hover:text-orange-400 transition-colors shrink-0 uppercase tracking-wider">RSS</a>',
