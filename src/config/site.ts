@@ -125,8 +125,8 @@ export const footerConfig = {
   copyrightText: "© 2026 Ker ZJZ. All Rights Reserved. ",
   /** ICP 备案信息（留空则不显示） */
   icp: {
-    text: "萌 ICP 备 20259426 号",
-    link: "https://icp.gov.moe/?keyword=20259426",
+    text: "萌 ICP 备 20269426 号",
+    link: "https://icp.gov.moe/?keyword=20269426",
   },
   /** 页脚底部链接列表 */
   links: [
