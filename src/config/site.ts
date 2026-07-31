@@ -112,7 +112,8 @@ export const navConfig: {
     { name: "标签", href: "/tags" },
   ],
 /** 外部链接项（桌面端"更多"下拉 + 移动端汉堡菜单底部） */
-  external: [
+   external: [
+    { name: "开往", href: "https://www.travellings.cn/go.html", external: true },
   ],
 };      
 
