@@ -279,6 +279,7 @@ export const aboutConfig = {
   emailLink: "mailto:KERZJZ@OUTLOOK.COM",
   /** QQ 显示文字 */
   qqValue: "3869843633",
+  wechatValue: "@Ker ZJZ",
   /** GitHub Socials 区块的邮箱链接 */
   socialEmailLink: "mailto:kerzjz@outlook.com",
 };
