@@ -274,12 +274,12 @@ export const aboutConfig = {
   /** GitHub 显示文字 */
   githubValue: "@Ker ZJZ\nkerzjz",
   /** 邮箱显示文字 */
-  emailValue: "KERZJZ@OUTLOOK.COM",
+  emailValue: siteConfig.socials.email,
   /** 邮箱链接 */
-  emailLink: "mailto:KERZJZ@OUTLOOK.COM",
+  emailLink: `mailto:${siteConfig.socials.email}`,
   /** QQ 显示文字 */
-  qqValue: "3869843633",
-  wechatValue: "@Ker ZJZ",
+  qqValue: siteConfig.socials.qq,
+  wechatValue: siteConfig.socials.wechat,
   /** GitHub Socials 区块的邮箱链接 */
   socialEmailLink: "mailto:kerzjz@outlook.com",
 };
