@@ -15,7 +15,7 @@ export const siteConfig = {
   /** 站点 URL（影响 Canonical、Sitemap、OG、RSS 等所有绝对链接） */
   url: "https://kerzjz.qzz.io", // Base URL of the site
   /** 作者头像 URL（导航栏、关于页、AuthorCard 等处使用） */
-  avatar: "https://cdn-us.imgs.moe/2026/01/17/a88d8365565406c0202ca8bad0560bd4.png",
+  avatar: "/images/big.png",
   /** 作者签名/座右铭（显示在 AuthorCard 侧边栏） */
   signature: "Stay hungry, stay foolish. ",
 
