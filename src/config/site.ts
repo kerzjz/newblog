@@ -32,8 +32,8 @@ export const siteConfig = {
     email: "kerzjz@outlook.com",
     website: "https://kerzjz.qzz.io",
     /** 关于页额外社交链接 */
-   wechat: "@Ker ZJZ",
-   qq: "3869843633",
+    wechat: "@Ker ZJZ",
+    qq: "3869843633",
     /** QQ群链接（欢迎提示中使用） */
         /** 订阅链接（欢迎提示中的"订阅"按钮，指向 GitHub Issues 等） */
     subscribe: "https://github.com/kerzjz/kerzjz.github.io/issues",
