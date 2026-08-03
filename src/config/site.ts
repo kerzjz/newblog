@@ -268,7 +268,7 @@ export const aboutConfig = {
   /** GitHub 介绍文字 */
   githubBio: "Tech[Web/AI]・Art&Culture[Piano/Design]・Game[Minecraft]・Economics",
   /** Bilibili 板块标题 */
-  bilibiliTitle: "MY bilibili @Ker ZJZ",
+  bilibiliTitle: "MY bilibili @Ker_ZJZ",
   /** GitHub 仓库链接（关于页"找到我"区块） */
   githubLink: "https://github.com/kerzjz",
   /** GitHub 显示文字 */
