@@ -55,7 +55,7 @@ export const siteConfig = {
   /** 图片 CDN / 默认封面 */
   assets: {
     /** 文章列表缺省封面图（为空时使用随机图） */
-    defaultPostCover: "",
+    defaultPostCover: "/images/big.png",
     /** 随机图服务地址（当文章无封面时 fallback 使用） */
     randomImage: "https://bing.img.run/rand.php",
     /** 站点 favicon 路径（相对站点根目录） */
