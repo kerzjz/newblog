@@ -29,7 +29,7 @@
   }
 
   function copyTemplate() {
-    const text = `=== 友链申请信息 ===\n名称: Ker ZJZ\n链接: https://kerzjz.qzz.io\n头像: https://kerzjz.qzz.io/images/me.png\n介绍: 逐光而上\n====================`;
+    const text = `=== 友链申请信息 ===\n名称: Ker ZJZ\n链接: https://kerzjz.qzz.io\n头像: https://kerzjz.qzz.io/images/big.png\n介绍: Stay hungry, stay foolish. \n====================`;
     copyText(text, "全部");
   }
 
@@ -191,7 +191,7 @@
         <!-- Rules -->
         <div class="space-y-3 font-semibold text-slate-700 leading-relaxed">
           <p>
-            欢迎同人、技术、设计、ACG、自媒体等各类健康有特色的独立博客相互串链。
+            欢迎技术、艺术与文化、经济等各类健康有特色的独立博客相互串链。
           </p>
           <div class="border-l-4 border-amber-400 pl-3 py-1 space-y-1 bg-[#fffbeb] rounded-r-md">
             <span class="font-bold text-amber-700 block">⚠️ 交换要求</span>
