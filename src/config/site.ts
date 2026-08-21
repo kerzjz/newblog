@@ -112,8 +112,8 @@ export const navConfig: {
   ],
   /** 外部链接项（桌面端"更多"下拉 + 移动端汉堡菜单底部） */
   external: [
-    { name: "Github", href: "https://github.com/kerzjz", external: true },
     { name: "Bilibili", href: "https://space.bilibili.com/3546746017810685", external: true },
+    { name: "Github", href: "https://github.com/kerzjz", external: true },
     { name: "邮件", href: "mailto:kerzjz@outlook.com", external: true },
   ],
 };
@@ -154,7 +154,7 @@ export const seoConfig = {
   /** 默认页面描述 */
   defaultDescription: "Ker ZJZ",
   /** 默认 OG 图片 URL */
-  defaultImage: "https://cdn-us.imgs.moe/2026/01/17/a88d8365565406c0202ca8bad0560bd4.png",
+  defaultImage: "/images/big.png",
   /** SEO 关键词 */
   keywords: ["Ker ZJZ", "blog", "科技", "艺术与文化", "经济"],
   /** robots meta 内容 */
@@ -258,9 +258,9 @@ export const aboutConfig = {
   /** 关于页 SEO 描述 */
   description: "Ker ZJZ",
   /** 角色标签 */
-  role: "前端开发者 / 独立创作者",
+  role: "开发者、创作者",
   /** 简介文字（{author} 会被替换为 siteConfig.author） */
-  intro: `你好，世界！我是 ${siteConfig.author}。`,
+  intro: `你好👋 我是${siteConfig.author}～`,
   /** 技能标签列表 */
   skills: [
     "CSS3", "HTML5", "JavaScript", "Markdown", "Python", "Cloudflare", "NPM", "GitHub Actions", "Git", "GitHub"
