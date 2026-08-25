@@ -107,7 +107,7 @@ export const navConfig: {
   mobileMore: [
     { name: "友链", href: "/friends" },
     { name: "关于", href: "/about" },
-    { name: "归档页面", href: "/archive" },
+    { name: "归档", href: "/archive" },
     { name: "标签", href: "/tags" },
   ],
   /** 外部链接项（桌面端"更多"下拉 + 移动端汉堡菜单底部） */
