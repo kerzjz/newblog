@@ -104,18 +104,18 @@ export const navConfig: {
   /** 桌面端导航栏主项 */
   desktop: [
     { name: "首页", href: "/", iconKey:"home", breakpoint: "", activeMatch: /^(\/|\/page\/|\/posts\/|\/category\/|\/tag\/)/ },
-    { name: "说说", href: "/talks", iconKey:"talks", breakpoint: "", activeMatch: /^\/talks/ },
-    { name: "友链", href: "/friends", iconKey:"friends", breakpoint: "sm", activeMatch: /^\/friends|^\/links/ },
-    { name: "关于", href: "/about", iconKey:"about", breakpoint: "md", activeMatch: /^\/about/ },
-    { name: "归档", href: "/archive", iconKey:"archive", breakpoint: "lg", activeMatch: /^\/archive/ },
-    { name: "标签", href: "/tags", iconKey:"tags", breakpoint: "xl", activeMatch: /^\/tag|^\/tags/ },
+    { name: "说说", href: "/talks", iconKey:"talks", breakpoint: "", activeMatch: /^$/ },
+    { name: "友链", href: "/friends", iconKey:"friends", breakpoint: "sm", activeMatch: /^$/ },
+    { name: "关于", href: "/about", iconKey:"about", breakpoint: "md", activeMatch: /^$/ },
+    { name: "归档", href: "/archive", iconKey:"archive", breakpoint: "lg", activeMatch: /^$/ },
+    { name: "标签", href: "/tags", iconKey:"tags", breakpoint: "xl", activeMatch: /^$/ },
   ],
   /** 移动端汉堡菜单中的额外项 */
   mobileMore: [
-    { name: "友链", href: "/friends", iconKey:"friends", activeMatch: /^\/friends|^\/links/ },
-    { name: "关于", href: "/about", iconKey:"about", activeMatch: /^\/about/ },
-    { name: "归档", href: "/archive", iconKey:"archive", activeMatch: /^\/archive/ },
-    { name: "标签", href: "/tags", iconKey:"tags", activeMatch: /^\/tag|^\/tags/ },
+    { name: "友链", href: "/friends", iconKey:"friends", activeMatch: /^$/ },
+    { name: "关于", href: "/about", iconKey:"about", activeMatch: /^$/ },
+    { name: "归档", href: "/archive", iconKey:"archive", activeMatch: /^$/ },
+    { name: "标签", href: "/tags", iconKey:"tags", activeMatch: /^$/ },
   ],
   /** 外部链接项（桌面端"更多"下拉 + 移动端汉堡菜单底部） */
   external: [
