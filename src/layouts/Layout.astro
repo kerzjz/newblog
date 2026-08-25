@@ -9,6 +9,9 @@ import WelcomeToast from '../components/WelcomeToast.astro';
 import { PageBanner } from '../components/PageBanner';
 import { execSync } from 'child_process';
 import '../index.css';
+// 删掉旧的DEFAULT_BG_URL常量
+const DEFAULT_BG_URL = siteConfig.defaultBgUrl;
+// 下面原有所有代码不动，直接继续使用变量 DEFAULT_BG_URL
 
 let bgCount = 6;
 
