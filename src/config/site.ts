@@ -18,7 +18,7 @@ export const siteConfig = {
   avatar: "/images/big.png",
   /** 作者签名/座右铭（显示在 AuthorCard 侧边栏） */
   signature: "Stay hungry, stay foolish. ",
-  defaultBgUrl: "/images/bg.png",
+  defaultBgUrl: "/images/bg.jpg",
   
   /** 社交链接（AuthorCard、页脚等处使用，关于页的“找到我”在下方，需单独修改） */
   socials: {
