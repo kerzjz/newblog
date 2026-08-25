@@ -209,7 +209,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).href;
   </script>
   <ClientRouter />
 </head>
-  <body data-bg-count={bgCount} class="dark:bg-slate-900 text-slate-900 dark:text-slate-100 selection:bg-[#fde68a] selection:text-[#0284c7]">
+  <body data-bg-count={bgCount} data-bg-url={DEFAULT_BG_URL} class="dark:bg-slate-900 text-slate-900 dark:text-slate-100 selection:bg-[#fde68a] selection:text-[#0284c7]">
     {/* Persistent full-page bg layer (survives View Transitions) */}
     <div
       id="site-bg"
@@ -374,7 +374,17 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).href;
         try { sessionStorage.setItem(KEY, String(i)); } catch (e) {}
       }
 
-      var url = 'https://img.upxuu.com/images/2026/7/' + i + '.webp';
+//      var url = 'https://img.upxuu.com/images/2026/7/' + i + '.webp';
+        // 从body读取配置的背景url
+        var configBgUrl = document.body.dataset.bgUrl || "";
+        var url;
+      if(configBgUrl){
+      url = configBgUrl;
+      }else{
+  // 回退原有随机逻辑
+  url = '/images/bg.jpg';
+}
+
       var loader = document.getElementById('site-bg-loader');
       var attach = isMobile ? 'scroll' : 'fixed';
 
