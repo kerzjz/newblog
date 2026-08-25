@@ -88,6 +88,12 @@ export interface NavItem {
   href: string;
   /** 是否在新标签打开 */
   external?: boolean;
+  /** 图标key，对应Navbar.astro中iconMap的key */
+  iconKey: string;
+  /** 仅 desktop 数组生效：''全部设备显示 | sm/md/lg/xl，大于等于该断点才显示 */
+  breakpoint?: '' | 'sm' | 'md' | 'lg' | 'xl';
+  /** 路由匹配正则，用来判断当前页面高亮激活 */
+  activeMatch: RegExp;
 }
 
 export const navConfig: {
@@ -97,27 +103,28 @@ export const navConfig: {
 } = {
   /** 桌面端导航栏主项 */
   desktop: [
-    { name: "首页", href: "/" },
-    { name: "说说", href: "/talks" },
-    { name: "友链", href: "/friends" },
-    { name: "关于", href: "/about" },
-    { name: "归档", href: "/archive" },
-    { name: "标签", href: "/tags" },
+    { name: "首页", href: "/", iconKey:"home", breakpoint: "", activeMatch: /^(\/|\/page\/|\/posts\/|\/category\/|\/tag\/)/ },
+    { name: "说说", href: "/talks", iconKey:"talks", breakpoint: "", activeMatch: /^\/talks/ },
+    { name: "友链", href: "/friends", iconKey:"friends", breakpoint: "sm", activeMatch: /^\/friends|^\/links/ },
+    { name: "关于", href: "/about", iconKey:"about", breakpoint: "md", activeMatch: /^\/about/ },
+    { name: "归档", href: "/archive", iconKey:"archive", breakpoint: "lg", activeMatch: /^\/archive/ },
+    { name: "标签", href: "/tags", iconKey:"tags", breakpoint: "xl", activeMatch: /^\/tag|^\/tags/ },
   ],
   /** 移动端汉堡菜单中的额外项 */
   mobileMore: [
-    { name: "友链", href: "/friends" },
-    { name: "关于", href: "/about" },
-    { name: "归档", href: "/archive" },
-    { name: "标签", href: "/tags" },
+    { name: "友链", href: "/friends", iconKey:"friends", activeMatch: /^\/friends|^\/links/ },
+    { name: "关于", href: "/about", iconKey:"about", activeMatch: /^\/about/ },
+    { name: "归档", href: "/archive", iconKey:"archive", activeMatch: /^\/archive/ },
+    { name: "标签", href: "/tags", iconKey:"tags", activeMatch: /^\/tag|^\/tags/ },
   ],
   /** 外部链接项（桌面端"更多"下拉 + 移动端汉堡菜单底部） */
   external: [
-    { name: "Bilibili", href: "https://space.bilibili.com/3546746017810685", external: true },
-    { name: "Github", href: "https://github.com/kerzjz", external: true },
-    { name: "邮件", href: "mailto:kerzjz@outlook.com", external: true },
+    { name: "Bilibili", href: "https://space.bilibili.com/3546746017810685", iconKey:"linkOut", external: true, activeMatch: /^$/ },
+    { name: "Github", href: "https://github.com/kerzjz", iconKey:"linkOut", external: true, activeMatch: /^$/ },
+    { name: "邮件", href: "mailto:kerzjz@outlook.com", iconKey:"linkOut", external: true, activeMatch: /^$/ },
   ],
 };
+
 
 /**
  * 页脚配置
