@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - 'src/content/posts/**/*.md'
-      - '!src/content/posts/talk/**'
+      - 'src/content/posts/talk/**'
   workflow_dispatch:
 
 jobs:
