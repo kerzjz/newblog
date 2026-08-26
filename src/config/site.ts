@@ -144,11 +144,15 @@ export const footerConfig = {
     { name: "Sitemap", path: "/sitemap.xml", external: true },
   ],
   /** 页脚开源仓库文字 */
-  repoText: "模版 ",
+  tplText: "模版 ",
   /** 页脚开源仓库链接 */
-  repoUrl: "https://github.com/ImUpXuu/xuhome",
+  tplUrl: "https://github.com/ImUpXuu/xuhome",
   /** 页脚开源仓库显示名 */
-  repoDisplayName: "IMUPXUU/XUHOME",
+  tplDisplayName: "IMUPXUU/XUHOME",
+  /** 页脚开源仓库链接 */
+  repoUrl: "https://github.com/kerzjz/newblog",
+  /** 页脚开源仓库显示名 */
+  repoDisplayName: "KERZJZ/NEWBLOG",
 };
 
 /**
