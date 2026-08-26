@@ -10,16 +10,19 @@ on:
 jobs:
   notify:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
+    env:
+      ISSUE_NUMBER: 2
+      TARGET_OWNER: kerzjz
+      TARGET_REPO: newblog
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
+          repository: kerzjz/newblog
 
-      - name: Get changed files
-        id: changed
+      - name: Detect changed posts
+        id: detect
         run: |
           CHANGED=$(git diff --name-only HEAD~1 HEAD | grep 'src/content/posts/.*\.md$' || true)
           if [ -z "$CHANGED" ]; then
@@ -30,7 +33,7 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Check cooldown
+      - name: Cooldown check
         id: cooldown
         run: |
           NOW=$(date +%s)
@@ -46,11 +49,11 @@ jobs:
           fi
           echo "skip=false" >> $GITHUB_OUTPUT
 
-      - name: Build and post notification
-        if: steps.changed.outputs.has_changes == 'true' && steps.cooldown.outputs.skip == 'false'
-        env:
-          CHANGED_FILES: ${{ steps.changed.outputs.changed }}
+      - name: Send notification comment
+        if: steps.detect.outputs.has_changes == 'true' && steps.cooldown.outputs.skip == 'false'
         uses: actions/github-script@v7
+        env:
+          CHANGED_FILES: ${{ steps.detect.outputs.changed }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -101,7 +104,6 @@ jobs:
             }
 
             let body = '## 宝宝你订阅的Ker ZJZ更新啦~\n\n';
-
             for (const p of posts) {
               body += `本文链接：${p.url}\n\n`;
               body += `### ${p.title}\n\n`;
@@ -115,29 +117,20 @@ jobs:
                 body += `📅 ${p.published}\n\n`;
               }
             }
-
             body += '感谢阅读\n\n';
             body += `**更新时间：** ${commitTime}\n`;
             body += `**Commit：** \`${commitSha}\` - ${commitMsg}\n`;
             body += '\n---\n*此通知由 GitHub Actions 自动发布，源码来自ImUpxuu/myblog*\n';
 
-            const issueNumber = 66;
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
+            const owner = process.env.TARGET_OWNER;
+            const repo = process.env.TARGET_REPO;
+
             await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
+              owner,
+              repo,
               issue_number: issueNumber,
               body: body
             });
 
             console.log('Notification posted to issue #' + issueNumber);
-
-      - name: Update cooldown timestamp
-        if: steps.changed.outputs.has_changes == 'true' && steps.cooldown.outputs.skip == 'false'
-        run: |
-          NOW=$(date +%s)
-          echo "{\"time\": $NOW}" > skipupdate.json
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git config user.name "github-actions[bot]"
-          git add skipupdate.json
-          git commit -m "chore: update skipupdate cooldown [skip ci]" || true
-          git push
