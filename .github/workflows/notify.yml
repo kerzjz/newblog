@@ -1,5 +1,4 @@
 name: Notify Blog Update
-
 on:
   push:
     branches: [main]
@@ -7,7 +6,6 @@ on:
       - 'src/content/posts/**/*.md'
       - 'src/content/posts/talk/**'
   workflow_dispatch:
-
 jobs:
   notify:
     runs-on: ubuntu-latest
@@ -17,20 +15,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
-
+          fetch-depth: 0
       - name: Get changed files
         id: changed
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
         run: |
-          CHANGED=$(git diff --name-only HEAD~1 HEAD | grep 'src/content/posts/.*\.md$' || true)
+          set -euo pipefail
+          if [ "${BEFORE}" = "0000000000000000000000000000000000000000" ]; then
+            # 仓库第一次推送
+            CHANGED=$(git ls-files 'src/content/posts/**/*.md' || true)
+          else
+            CHANGED=$(git diff --name-only --diff-filter=ACMR "${BEFORE}" "${AFTER}" -- 'src/content/posts/' || true)
+          fi
+          # 过滤掉 talk 文件夹下的文件
+          CHANGED=$(echo "$CHANGED" | grep -v '^src/content/posts/talk/' || true)
+
           if [ -z "$CHANGED" ]; then
             echo "changed=" >> $GITHUB_OUTPUT
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
-            echo "changed=${CHANGED}" >> $GITHUB_OUTPUT
+            echo "changed<<EOF" >> $GITHUB_OUTPUT
+            echo "$CHANGED" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
-
       - name: Check cooldown
         id: cooldown
         run: |
@@ -46,7 +56,6 @@ jobs:
             fi
           fi
           echo "skip=false" >> $GITHUB_OUTPUT
-
       - name: Build and post notification
         if: steps.changed.outputs.has_changes == 'true' && steps.cooldown.outputs.skip == 'false'
         env:
@@ -57,13 +66,10 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            const crypto = require('crypto');
-
-            const changedFiles = process.env.CHANGED_FILES.trim().split(/\s+/).filter(Boolean);
+            const changedFiles = process.env.CHANGED_FILES.trim().split(/\r?\n/).filter(Boolean);
             const commitMsg = require('child_process').execSync('git log -1 --pretty=format:%s').toString().trim().split('\n')[0];
             const commitSha = require('child_process').execSync('git log -1 --pretty=format:%h').toString().trim();
             const commitTime = new Date().toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
-
             function parseFrontmatter(filepath) {
               const content = fs.readFileSync(filepath, 'utf-8');
               const m = content.match(/^---\s*\n(.*?)\n---/s);
@@ -79,19 +85,16 @@ jobs:
               });
               return fm;
             }
-
             const posts = [];
             for (const file of changedFiles) {
               if (!file.endsWith('.md')) continue;
               const content = fs.readFileSync(file, 'utf-8');
               const fm = parseFrontmatter(file);
               const slug = path.basename(file, '.md');
-
               const fmEnd = content.indexOf('---', 3) + 3;
               const body = content.substring(fmEnd).trim();
               const plainText = body.replace(/^#+\s+/gm, '').replace(/!\[.*?\]\(.*?\)/g, '').replace(/\[.*?\]\(.*?\)/g, '$1').replace(/[*_~`#]/g, '').replace(/\n+/g, ' ').trim();
               const preview = plainText.length > 70 ? plainText.substring(0, 70) + '...' : plainText;
-
               posts.push({
                 title: fm['title'] || slug,
                 description: fm['description'] || '',
@@ -100,9 +103,7 @@ jobs:
                 preview: preview
               });
             }
-
             let body = '## 宝宝你订阅的Ker ZJZ更新啦~\n\n';
-
             for (const p of posts) {
               body += `本文链接：${p.url}\n\n`;
               body += `### ${p.title}\n\n`;
@@ -116,12 +117,10 @@ jobs:
                 body += `📅 ${p.published}\n\n`;
               }
             }
-
             body += '感谢阅读\n\n';
             body += `**更新时间：** ${commitTime}\n`;
             body += `**Commit：** \`${commitSha}\` - ${commitMsg}\n`;
             body += '\n---\n*此通知由 GitHub Actions 自动发布，源码来自ImUpxuu/myblog*\n';
-
             const issueNumber = 66;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
@@ -129,9 +128,7 @@ jobs:
               issue_number: issueNumber,
               body: body
             });
-
             console.log('Notification posted to issue #' + issueNumber);
-
       - name: Update cooldown timestamp
         if: steps.changed.outputs.has_changes == 'true' && steps.cooldown.outputs.skip == 'false'
         run: |
