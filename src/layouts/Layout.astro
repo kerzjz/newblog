@@ -309,7 +309,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).href;
             {infoConfig.footer.icp && <><span class="mx-1.5">|</span><a href={infoConfig.footer.icp.link} target="_blank" rel="noopener noreferrer" class="hover:text-[#0ea5e9] transition-colors text-[#0284c7] hover:underline">{infoConfig.footer.icp.text}</a></>}
           </div>
           <div>
-            <span>{footerConfig.repoText}</span><a href={footerConfig.repoUrl} class="hover:text-[#0ea5e9] underline font-bold">{footerConfig.repoDisplayName}</a>
+            <span>{footerConfig.tplText}</span><a href={footerConfig.tplUrl} class="hover:text-[#0ea5e9] underline font-bold">{footerConfig.tplDisplayName}</a>
             {(() => {
               try {
                 const log = execSync('git log -n 1 --pretty=format:"%h||%ci"').toString().trim();
