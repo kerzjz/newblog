@@ -21,15 +21,21 @@ jobs:
         env:
           BEFORE: ${{ github.event.before }}
           AFTER: ${{ github.sha }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           set -euo pipefail
-          if [ "${BEFORE}" = "0000000000000000000000000000000000000000" ]; then
-            # 仓库第一次推送
+          if [[ "${EVENT_NAME}" == "workflow_dispatch" ]]; then
+            # 手动运行，直接拿本次提交对比上一个
+            CHANGED=$(git diff --name-only --diff-filter=ACMR HEAD~1 HEAD -- 'src/content/posts/' || true)
+          elif [ "${BEFORE}" = "0000000000000000000000000000000000000000" ]; then
+            # 首次推送仓库
             CHANGED=$(git ls-files 'src/content/posts/**/*.md' || true)
           else
+            # 正常push事件
             CHANGED=$(git diff --name-only --diff-filter=ACMR "${BEFORE}" "${AFTER}" -- 'src/content/posts/' || true)
           fi
-          # 过滤掉 talk 文件夹下的文件
+
+          # 过滤 talk 目录
           CHANGED=$(echo "$CHANGED" | grep -v '^src/content/posts/talk/' || true)
 
           if [ -z "$CHANGED" ]; then
