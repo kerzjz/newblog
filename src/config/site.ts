@@ -139,7 +139,7 @@ export const footerConfig = {
   },
   /** 页脚底部链接列表 */
   links: [
-    { name: "友情链接", path: "/friends", external: false },
+    { name: "法律声明", path: "/legal", external: false },
     { name: "RSS", path: "/rss.xml", external: true },
     { name: "Sitemap", path: "/sitemap.xml", external: true },
   ],
