@@ -14,7 +14,7 @@ export default defineConfig({
   output: 'static',
   outDir: 'dist',
   integrations: [react(), svelte(), mdx()],
-  site: 'https://kerzjz.qzz.io',
+  site: 'shturl.cc/uj60oDZuoog',
   redirects: {
     '/talk': {
       destination: '/talks',
@@ -22,8 +22,18 @@ export default defineConfig({
     }
   },
   markdown: {
-    remarkPlugins: [remarkGfm, remarkMath, remarkAdmonitions, remarkGithubCard],
-    rehypePlugins: [rehypeKatex],
+    // 关键：使用 ...Astro.markdown.remarkPlugins 继承内置基础解析管线
+    remarkPlugins: [
+      ...defineConfig.defaults.markdown.remarkPlugins,
+      remarkGfm,
+      remarkMath,
+      remarkAdmonitions,
+      remarkGithubCard
+    ],
+    rehypePlugins: [
+      ...defineConfig.defaults.markdown.rehypePlugins,
+      rehypeKatex
+    ],
   },
   vite: {
     plugins: [tailwindcss()],
