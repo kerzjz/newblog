@@ -22,14 +22,16 @@ export default defineConfig({
     }
   },
   markdown: {
-    // 关键：使用 ...Astro.markdown.remarkPlugins 继承内置基础解析管线
     remarkPlugins: [
-      ...defineConfig.defaults.markdown.remarkPlugins,
       remarkGfm,
       remarkMath,
       remarkAdmonitions,
       remarkGithubCard
     ],
+    rehypePlugins: [
+      rehypeKatex
+    ],
+  },
     rehypePlugins: [
       ...defineConfig.defaults.markdown.rehypePlugins,
       rehypeKatex
