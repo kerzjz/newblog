@@ -14,7 +14,7 @@ export default defineConfig({
   output: 'static',
   outDir: 'dist',
   integrations: [react(), svelte(), mdx()],
-  site: 'shturl.cc/uj60oDZuoog',
+  site: 'https://kerzjz.qzz.io',
   redirects: {
     '/talk': {
       destination: '/talks',
@@ -22,20 +22,8 @@ export default defineConfig({
     }
   },
   markdown: {
-    remarkPlugins: [
-      remarkGfm,
-      remarkMath,
-      remarkAdmonitions,
-      remarkGithubCard
-    ],
-    rehypePlugins: [
-      rehypeKatex
-    ],
-  },
-    rehypePlugins: [
-      ...defineConfig.defaults.markdown.rehypePlugins,
-      rehypeKatex
-    ],
+    remarkPlugins: [remarkGfm, remarkMath, remarkAdmonitions, remarkGithubCard],
+    rehypePlugins: [rehypeKatex],
   },
   vite: {
     plugins: [tailwindcss()],
