@@ -11,14 +11,14 @@ const talksCollection = defineCollection({
   schema: z.any()
 });
 
-const extraCollection = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/extra" }),
+const pagesCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/pages" }),
   schema: z.any(),
 });
 
 export const collections = {
   posts: postsCollection,
   talks: talksCollection, 
-  extra: extraCollection
+  pages: pagesCollection
 };
 
