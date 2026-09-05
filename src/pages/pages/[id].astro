@@ -14,7 +14,7 @@ import '@fancyapps/ui/dist/fancybox/fancybox.css';
 
 // 2. getStaticPaths 函数
 export async function getStaticPaths() {
-  const posts = await getProcessedPosts('extra');
+  const posts = await getProcessedPosts('pages');
   return posts.map(post => {
     return {
       params: { id: post.slug },
@@ -29,7 +29,7 @@ const { post } = Astro.props;
 
 // 4. 渲染内容
 import { render } from 'astro:content';
-const rawPosts = await getCollection('extra');
+const rawPosts = await getCollection('pages');
 const articleEntry = rawPosts.find(p => (p.slug || p.id) === post.slug);
 if (!articleEntry) {
   return Astro.redirect('/404');
@@ -38,7 +38,7 @@ const { Content, headings } = await render(articleEntry);
 const readTime = calculateReadingTime(articleEntry.body || "");
 
 // 5. 计算其他数据
-const allPosts = await getProcessedPosts('extra');
+const allPosts = await getProcessedPosts('pages');
 const tagMap: Record<string, number> = {};
 allPosts.forEach(p => { if (p.tags) { p.tags.forEach(t => { tagMap[t] = (tagMap[t] || 0) + 1; }); } });
 const allTags = Object.entries(tagMap).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count);
