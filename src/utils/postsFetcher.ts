@@ -26,8 +26,9 @@ export interface TalkItem {
   device: string;
 }
 
-export async function getProcessedPosts(): Promise<PostItem[]> {
-  const rawPosts = await getCollection('posts');
+// 修改点：增加 collectionName 参数，默认为 'posts'
+export async function getProcessedPosts(collectionName: string = 'posts'): Promise<PostItem[]> {
+  const rawPosts = await getCollection(collectionName as any);
   
   const processed = rawPosts.map((post: any) => {
     const data = post.data;

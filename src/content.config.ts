@@ -11,8 +11,14 @@ const talksCollection = defineCollection({
   schema: z.any()
 });
 
+const extraCollection = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/extra" }),
+  schema: z.any(),
+});
+
 export const collections = {
   posts: postsCollection,
-  talks: talksCollection
+  talks: talksCollection, 
+  extra: extraCollection
 };
 
