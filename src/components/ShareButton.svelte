@@ -37,7 +37,7 @@
   }
 
   function shareToQQ() {
-    window.open('https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + encodeURIComponent(shareUrl) + '&title=' + encodeURIComponent(title) + '&desc=' + encodeURIComponent(description) + '&summary=' + encodeURIComponent(description) + '&site=UpXuu', '_blank', 'width=700,height=600');
+    window.open('https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + encodeURIComponent(shareUrl) + '&title=' + encodeURIComponent(title) + '&desc=' + encodeURIComponent(description) + '&summary=' + encodeURIComponent(description) + '&site=Ker ZJZ', '_blank', 'width=700,height=600');
   }
 
   function shareToX() {
@@ -124,10 +124,10 @@
       ctx.fillStyle = '#ffffff';
       ctx.font = 'bold 28px "Fredoka", "Noto Sans SC", system-ui, sans-serif';
       ctx.textAlign = 'left';
-      ctx.fillText('UPXUU · BLOG', 40, 68);
+      ctx.fillText('Ker ZJZ', 40, 68);
       ctx.font = 'bold 16px "Noto Sans SC", system-ui, sans-serif';
       ctx.fillStyle = '#bae6fd';
-      ctx.fillText('分享一张好看的文章卡片', 40, 90);
+      ctx.fillText('分享文章', 40, 90);
 
       let y = 120;
       const pad = 40;
@@ -167,7 +167,7 @@
         ctx.fillStyle = '#0284c7';
         ctx.font = 'bold 42px "Fredoka", system-ui, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('UPXUU', pad + contentW / 2, y + 72);
+        ctx.fillText('Ker ZJZ', pad + contentW / 2, y + 72);
         ctx.textAlign = 'left';
         y += 148;
       }
@@ -228,7 +228,7 @@
       ctx.closePath();
       ctx.clip();
       try {
-        const avImg = await loadImage('https://upxuu.com/images/me.jpg');
+        const avImg = await loadImage('https://kerzjz.qzz.io/images/me.jpg');
         ctx.drawImage(avImg, avX, avY, av, av);
       } catch {
         ctx.fillStyle = '#0284c7';
@@ -246,10 +246,10 @@
       ctx.fillStyle = '#0f172a';
       ctx.font = 'bold 26px "Noto Sans SC", system-ui, sans-serif';
       ctx.textAlign = 'left';
-      ctx.fillText('UPXUU', avX + av + 20, footerY + 58);
+      ctx.fillText('Ker ZJZ', avX + av + 20, footerY + 58);
       ctx.fillStyle = '#0284c7';
       ctx.font = 'bold 18px "JetBrains Mono", monospace';
-      ctx.fillText('upxuu.com', avX + av + 20, footerY + 90);
+      ctx.fillText('kerzjz.qzz.io', avX + av + 20, footerY + 90);
       ctx.fillStyle = '#94a3b8';
       ctx.font = '14px "Noto Sans SC", system-ui, sans-serif';
       const shortUrl = shareUrl.replace(/^https?:\/\//, '').slice(0, 28);
