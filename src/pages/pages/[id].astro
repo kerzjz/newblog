@@ -197,43 +197,6 @@ const relatedPosts = (() => {
           </div>
         )}
 
-        {/* Previous / Next pagination navigation blocks */}
-        <div class="flex flex-col sm:flex-row gap-3 w-full animate-card-entrance opacity-0" style="animation-delay: 0.1s">
-          {prevPost ? (
-            <a 
-              href={`/posts/${encodeURIComponent(prevPost.slug)}`}
-              class="flex-1 min-w-0 bg-white hover:bg-slate-50 border-3 border-[#0284c7] px-4 py-3 rounded-sm shadow-[4px_4px_0px_0px_#0284c7] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all duration-200 flex items-center gap-3 group text-left"
-            >
-              <span class="text-[#0ea5e9] group-hover:-translate-x-1 transition-transform shrink-0 font-extrabold">❮</span>
-              <div class="min-w-0 flex-1">
-                <div class="text-[9px] uppercase font-black tracking-widest text-slate-400 mb-0.5">{i18nConfig.post.prevPost}</div>
-                <p class="text-xs sm:text-sm font-black text-slate-700 dark:text-slate-200 truncate">{prevPost.title}</p>
-              </div>
-            </a>
-          ) : (
-            <div class="hidden sm:block flex-1 border-3 border-dashed border-[#0284c7]/20 px-4 py-3 rounded-sm text-center text-xs font-black text-slate-400 dark:text-slate-500 bg-slate-50/30 dark:bg-slate-700/30">
-              {i18nConfig.post.noMorePrev}
-            </div>
-          )}
-
-          {nextPost ? (
-            <a 
-              href={`/posts/${encodeURIComponent(nextPost.slug)}`}
-              class="flex-1 min-w-0 bg-white hover:bg-slate-50 border-3 border-[#0284c7] px-4 py-3 rounded-sm shadow-[4px_4px_0px_0px_#0284c7] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all duration-200 flex items-center justify-between gap-3 group text-right"
-            >
-              <div class="min-w-0 flex-1">
-                <div class="text-[9px] uppercase font-black tracking-widest text-slate-400 mb-0.5">{i18nConfig.post.nextPost}</div>
-                <p class="text-xs sm:text-sm font-black text-slate-700 dark:text-slate-200 truncate">{nextPost.title}</p>
-              </div>
-              <span class="text-[#0ea5e9] group-hover:translate-x-1 transition-transform shrink-0 font-extrabold">❯</span>
-            </a>
-          ) : (
-            <div class="hidden sm:block flex-1 border-3 border-dashed border-[#0284c7]/20 px-4 py-3 rounded-sm text-center text-xs font-black text-slate-400 dark:text-slate-500 bg-slate-50/30 dark:bg-slate-700/30">
-              {i18nConfig.post.noMoreNext}
-            </div>
-          )}
-        </div>
-
         {/* Waline Comments */}
         <WalineComment client:idle />
       </div>
