@@ -60,6 +60,20 @@
     window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(title + (description ? ' - ' + description : '')) + '&url=' + encodeURIComponent(shareUrl), '_blank', 'width=600,height=400');
   }
 
+  // 复用原有的 title、description、shareUrl 变量，不新增额外字符串变量
+  function shareToDoubao() {
+  const sendText = `阅读这篇名为“${title}”的文章，地址为${shareUrl}，并总结主要内容`;
+  const actionObj = {
+    pluginId: "Send_Message",
+    payload: {
+      text: sendText
+    }
+  };
+  const actionParam = encodeURIComponent(JSON.stringify(actionObj));
+  const jumpUrl = `https://www.doubao.com/chat/url-action?action=${actionParam}`;
+  window.open(jumpUrl, '_blank', 'width=800,height=600');
+}
+  
   function shareToWeChat() {
     navigator.clipboard.writeText(title + '\n' + description + '\n' + shareUrl).then(() => alert('已复制，打开微信粘贴给好友'));
   }
@@ -500,13 +514,16 @@
             <span class="text-lg">⌁</span><span>{copied ? '已复制' : '复制链接'}</span>
           </button>
           <button type="button" on:click={shareToWeChat} class="min-h-16 rounded-2xl bg-white dark:bg-slate-700 border border-[#c5e2f2] text-[#4b83a5] font-bold text-sm hover:bg-[#eef7fc] transition-colors flex flex-col items-center justify-center gap-1">
-            <span class="text-lg text-[#07c160]">●</span><span>微信</span>
+            <span class="text-lg text-[#07c160]">微信</span><span>微信</span>
           </button>
           <button type="button" on:click={shareToQQ} class="min-h-16 rounded-2xl bg-white dark:bg-slate-700 border border-[#c5e2f2] text-[#4b83a5] font-bold text-sm hover:bg-[#eef7fc] transition-colors flex flex-col items-center justify-center gap-1">
-            <span class="text-lg">Q</span><span>QQ 空间</span>
+            <span class="text-lg">QQ</span><span>QQ 空间</span>
           </button>
           <button type="button" on:click={shareToX} class="min-h-16 rounded-2xl bg-white dark:bg-slate-700 border border-[#c5e2f2] text-[#4b83a5] font-bold text-sm hover:bg-[#eef7fc] transition-colors flex flex-col items-center justify-center gap-1">
             <span class="text-lg">𝕏</span><span>分享到 X</span>
+          </button>
+          <button type="button" on:click={shareToDoubao} class="min-h-16 rounded-2xl bg-white dark:bg-slate-700 border border-[#c5e2f2] text-[#4b83a5] font-bold text-sm hover:bg-[#eef7fc] transition-colors flex flex-col items-center justify-center gap-1">
+            <span class="text-lg">豆包</span><span>分享给 豆包</span>
           </button>
         </div>
         {#if posterError}<p class="mt-3 text-center text-xs font-medium text-red-500">{posterError}</p>{/if}
