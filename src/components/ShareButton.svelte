@@ -53,7 +53,7 @@
   }
 
   function shareToQQ() {
-    window.open('https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + encodeURIComponent(shareUrl) + '&title=' + encodeURIComponent(title) + '&desc=' + encodeURIComponent(description) + '&summary=' + encodeURIComponent(description) + '&site=UpXuu', '_blank', 'width=700,height=600');
+    window.open('https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + encodeURIComponent(shareUrl) + '&title=' + encodeURIComponent(title) + '&desc=' + encodeURIComponent(description) + '&summary=' + encodeURIComponent(description) + '&site=`${title}`', '_blank', 'width=700,height=600');
   }
 
   function shareToX() {
@@ -202,10 +202,10 @@
 
       ctx.fillStyle = ink;
       ctx.font = `900 27px ${FONT}`;
-      ctx.fillText('UpXuu', logoX + logoS + 18, logoY + 24);
+      ctx.fillText(`${title}`, logoX + logoS + 18, logoY + 24);
       ctx.fillStyle = muted;
       ctx.font = `500 15px ${FONT}`;
-      ctx.fillText('upxuu.com', logoX + logoS + 18, logoY + 46);
+      ctx.fillText(`${url}`, logoX + logoS + 18, logoY + 46);
 
       // 右侧「文章分享」标签
       const pillText = '文章分享';
@@ -369,7 +369,7 @@
       roundedRect(avX, avY, av, av, 18);
       ctx.clip();
       try {
-        const avImg = await loadImage('https://upxuu.com/images/me.jpg');
+        const avImg = await loadImage('/images/big.png');
         ctx.drawImage(avImg, avX, avY, av, av);
       } catch {
         ctx.fillStyle = brand;
@@ -390,10 +390,10 @@
 
       ctx.fillStyle = ink;
       ctx.font = `900 25px ${FONT}`;
-      ctx.fillText('UpXuu', avX + av + 22, footY + 58);
+      ctx.fillText(`${title}`, avX + av + 22, footY + 58);
       ctx.fillStyle = muted;
       ctx.font = `500 16px ${FONT}`;
-      ctx.fillText('逐光而上！ · upxuu.com', avX + av + 22, footY + 88);
+      ctx.fillText(`${url}`, avX + av + 22, footY + 88);
 
       // 二维码
       const qr = 108;
@@ -487,7 +487,7 @@
           {#if image}<img src={image} alt="" class="w-14 h-14 rounded-xl object-cover shrink-0" />{/if}
           <div class="min-w-0">
             <h3 class="font-bold text-[#17324d] dark:text-slate-100 line-clamp-2">{title || '无标题'}</h3>
-            <p class="mt-1 text-xs text-[#6b8298] line-clamp-2">{description || '来自 UpXuu 的文章分享'}</p>
+            <p class="mt-1 text-xs text-[#6b8298] line-clamp-2">{description || '来自 `${title}` 的文章分享'}</p>
           </div>
         </div>
 
