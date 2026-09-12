@@ -8,13 +8,14 @@ import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
 import { remarkAdmonitions } from './src/plugins/remark-admonitions.mjs';
 import { remarkGithubCard } from './src/plugins/remark-github-card.mjs';
+import { siteConfig } from './src/config/site.ts';
 
 // https://astro.build/config
 export default defineConfig({
   output: 'static',
   outDir: 'dist',
   integrations: [react(), svelte(), mdx()],
-  site: 'https://kerzjz.qzz.io',
+  site: siteConfig.url,
   redirects: {
     '/talk': {
       destination: '/talks',

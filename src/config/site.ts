@@ -46,11 +46,27 @@ export const siteConfig = {
     umami: [
       { src: "https://cloud.umami.is/script.js", id: "e0312402-c63e-47b2-ba66-e4a7ab208eef" },
     ],
+    /** Umami 网站 ID（StatsDashboard 面板使用） */
+    umamiWebsiteId: 'cd983d6c-e011-489d-903f-4757ce41c14d',
+    /** Umami 公开面板链接 */
+    umamiDashboard: 'https://stats.upxuu.com/share/sFftlqBkgk2z9JM2',
+    /** 站点统计 API 基础地址 */
+    statsApiBase: 'https://blogapi.476543.xyz',
     /** 站点统计 API（页脚访问量/在线人数、欢迎提示调用） */
     statsApi: {
       alltime: 'https://blogapi.476543.xyz/statsapi/alltime',
       active: 'https://blogapi.476543.xyz/api/active',
     },
+    /** 文章页浏览统计 API（ShareButton 中用于显示阅读次数） */
+    pageViewsApi: 'https://beat.345696.xyz/api/stats',
+    /** 页面浏览追踪 API（Layout 中用于发送 beacon） */
+    pageTrackApi: 'https://beat.345696.xyz/api/track',
+    /** 天气 API（欢迎提示中显示访客位置和天气） */
+    weatherApi: 'https://uapis.cn/api/v1/misc/weather',
+    /** Umami 自托管实例域名（隐私政策页面引用） */
+    umamiInstance: 'stats.upxuu.com',
+    /** AI 后端 API 基础域名（隐私政策页面引用） */
+    aiApiBase: 'blogapi.upxuu.com',
   },
 
   /** 图片 CDN / 默认封面 */
@@ -61,6 +77,8 @@ export const siteConfig = {
     randomImage: "/images/me.png",
     /** 站点 favicon 路径（相对站点根目录） */
     favicon: "/images/me.png",
+    /** 分享海报中使用的头像（绝对路径，用于 Canvas 绘制） */
+    posterAvatar: "/images/me.jpg",
   },
 
   /** 站点运行起始时间（页脚"已在互联网中航行"计时器用） */
@@ -220,7 +238,7 @@ export const welcomeConfig = {
   /** 提示显示时长（毫秒） */
   duration: 5000,
   /** 天气 API 地址（用于显示访客位置和天气） */
-  weatherApi: "https://uapis.cn/api/v1/misc/weather",
+  weatherApi: siteConfig.analytics.weatherApi,
   /** 默认问候语（天气 API 失败时显示） */
   fallbackMessage: "Hi！远方的朋友",
   /** sessionStorage 键名（标记是否已展示过） */
@@ -259,6 +277,39 @@ export const contentConfig = {
     { id: 'gemma', name: 'Gemma-4-31b-it (OpenRouter)', url: 'https://blogapi.upxuu.com/chat2', hasThinking: true },
     { id: 'deepseek-r1', name: 'DeepSeek-R1', url: 'https://blogapi.upxuu.com/chat3', hasThinking: true },
   ],
+};
+
+/**
+ * 评论系统配置（Giscus）
+ */
+export const commentsConfig = {
+  /** Giscus 仓库名称（格式：owner/repo） */
+  repo: 'kerzjz/newblog',
+  /** Giscus 仓库 ID */
+  repoId: 'R_kgDOToBa3A',
+  /** Giscus 讨论分类 */
+  category: 'Announcements',
+  /** Giscus 讨论分类 ID */
+  categoryId: 'DIC_kwDOToBa3M4DCWsk',
+};
+
+/**
+ * 友链申请配置
+ */
+export const friendsApplyConfig = {
+  /** GitHub Issue 友链申请模板 URL */
+  issueTemplateUrl: 'https://github.com/kerzjz/newblog/issues/new?template=friend-request.yml',
+};
+
+/**
+ * 欢迎提示（WelcomeToast）运行时配置
+ * 注：其余字段（duration、fallbackMessage、quickLinks）在 welcomeConfig 中
+ */
+export const welcomeRuntimeConfig = {
+  /** sessionStorage 键名（标记是否已展示过） */
+  sessionKey: 'xuhome_visit_flag',
+  /** 站点唯一域名标识（显示在欢迎提示横幅中） */
+  domainBadge: 'KERZJZ.QZZ.IO',
 };
 
 /**

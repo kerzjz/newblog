@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { friendsConfig, type Friend } from "../config/friends";
-  import { siteConfig } from "../config/site";
+  import { siteConfig, friendsApplyConfig } from "../config/site";
 
   let searchTerm = "";
   let copied = false;
@@ -29,7 +29,7 @@
   }
 
   function copyTemplate() {
-    const text = `=== 友链申请信息 ===\n名称: Ker ZJZ\n链接: https://kerzjz.qzz.io\n头像: https://kerzjz.qzz.io/images/big.png\n介绍: Stay hungry, stay foolish. \n====================`;
+    const text = `=== 友链申请信息 ===\n名称: ${siteConfig.title}\n链接: ${siteConfig.url}\n头像: ${siteConfig.url}${siteConfig.assets.defaultPostCover}\n介绍: ${siteConfig.signature}\n====================`;
     copyText(text, "全部");
   }
 
@@ -203,12 +203,12 @@
           </div>
           <p class="text-xs text-slate-400">
             添加完毕后，可以通过下方 GitHub Issue 快速申请，或发邮件联系：
-            <a href="mailto:kerzjz@outlook.com" class="text-[#0284c7] hover:underline font-bold ml-1">
-              kerzjz@outlook.com
+            <a href={`mailto:${siteConfig.socials.email}`} class="text-[#0284c7] hover:underline font-bold ml-1">
+              {siteConfig.socials.email}
             </a>
           </p>
           <a 
-            href="https://github.com/kerzjz/newblog/issues/new?template=friend-request.yml" 
+            href={friendsApplyConfig.issueTemplateUrl}
             target="_blank" 
             rel="noopener noreferrer"
             class="inline-block px-4 py-2 bg-[#0284c7] text-white font-black text-xs rounded-sm hover:bg-[#0ea5e9] transition-all"
@@ -224,17 +224,17 @@
           </span>
           
           <ul class="space-y-1.5 text-xs text-slate-600 list-none leading-loose">
-            <li on:click={() => copyText("Ker ZJZ", "站点名称")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
-              <strong class="text-slate-800">站点名称：</strong> Ker ZJZ
+            <li on:click={() => copyText(siteConfig.title, "站点名称")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
+              <strong class="text-slate-800">站点名称：</strong> {siteConfig.title}
             </li>
-            <li on:click={() => copyText("https://kerzjz.qzz.io", "站点域名")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
-              <strong class="text-slate-800">站点域名：</strong> https://kerzjz.qzz.io
+            <li on:click={() => copyText(siteConfig.url, "站点域名")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
+              <strong class="text-slate-800">站点域名：</strong> {siteConfig.url}
             </li>
-            <li on:click={() => copyText("https://kerzjz.qzz.io/images/me.png", "站点头像")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
-              <strong class="text-slate-800">站点头像：</strong> https://kerzjz.qzz.io/images/me.png
+            <li on:click={() => copyText(siteConfig.url + siteConfig.assets.defaultPostCover, "站点头像")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
+              <strong class="text-slate-800">站点头像：</strong> {siteConfig.url + siteConfig.assets.defaultPostCover}
             </li>
-            <li on:click={() => copyText("Stay hungry, stay foolish. ", "站点简介")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
-              <strong class="text-slate-800">站点简介：</strong> Stay hungry, stay foolish. 
+            <li on:click={() => copyText(siteConfig.signature, "站点简介")} class="cursor-pointer hover:bg-slate-100 rounded-sm px-1 -mx-1 transition-colors">
+              <strong class="text-slate-800">站点简介：</strong> {siteConfig.signature}
             </li>
           </ul>
 

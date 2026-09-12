@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { siteConfig } from '../config/site';
 
 function escapeXml(unsafe: string): string {
   return unsafe.replace(/[<>&'"]/g, (c) => {
@@ -18,7 +19,7 @@ export async function GET(context: any) {
   const rawTalks = await getCollection('talks');
   
   // Normalize domain of the site (remove trailing slash)
-  const siteUrl = context.site ? context.site.toString() : 'https://kerzjz.qzz.io';
+  const siteUrl = context.site ? context.site.toString() : siteConfig.url;
   const domain = siteUrl.replace(/\/$/, '');
 
   const urls = [

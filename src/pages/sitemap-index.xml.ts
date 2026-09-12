@@ -1,5 +1,7 @@
+import { siteConfig } from '../config/site';
+
 export async function GET(context: any) {
-  const siteUrl = context.site ? context.site.toString() : 'https://kerzjz.qzz.io';
+  const siteUrl = context.site ? context.site.toString() : siteConfig.url;
   const domain = siteUrl.replace(/\/$/, '');
 
   const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>

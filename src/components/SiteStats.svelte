@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { siteConfig } from '../config/site';
 
   export let compact = false;
 
@@ -12,8 +13,8 @@
   onMount(async () => {
     try {
       const [statsRes, activeRes] = await Promise.allSettled([
-        fetch('https://blogapi.476543.xyz/statsapi/alltime', { signal: AbortSignal.timeout(5000) }),
-        fetch('https://blogapi.476543.xyz/api/active', { signal: AbortSignal.timeout(5000) })
+        fetch(siteConfig.analytics.statsApi.alltime, { signal: AbortSignal.timeout(5000) }),
+        fetch(siteConfig.analytics.statsApi.active, { signal: AbortSignal.timeout(5000) })
       ]);
 
       if (statsRes.status === 'fulfilled') {

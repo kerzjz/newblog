@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { commentsConfig } from '../config/site';
 
 export function WalineComment() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -16,10 +17,10 @@ export function WalineComment() {
     script.async = true;
 
     // 你现成的完整配置
-    script.setAttribute('data-repo', 'kerzjz/newblog');
-    script.setAttribute('data-repo-id', 'R_kgDOToBa3A');
-    script.setAttribute('data-category', 'Announcements');
-    script.setAttribute('data-category-id', 'DIC_kwDOToBa3M4DCWsk');
+    script.setAttribute('data-repo', commentsConfig.repo);
+    script.setAttribute('data-repo-id', commentsConfig.repoId);
+    script.setAttribute('data-category', commentsConfig.category);
+    script.setAttribute('data-category-id', commentsConfig.categoryId);
     script.setAttribute('data-mapping', 'pathname');
     script.setAttribute('data-strict', '0');
     script.setAttribute('data-reactions-enabled', '1');

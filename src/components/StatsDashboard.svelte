@@ -1,7 +1,8 @@
 <script>
   import { onMount } from 'svelte';
+  import { siteConfig } from '../config/site';
 
-  const WEBSITE_ID = 'cd983d6c-e011-489d-903f-4757ce41c14d';
+  const statsBase = siteConfig.analytics.statsApiBase;
 
   // Loading states
   let loadingAlltime = true;
@@ -75,7 +76,7 @@
     loadingMetrics = true;
     const { startAt, endAt } = getRangeTimestamps();
     const m = (type) =>
-      fetch(`https://blogapi.476543.xyz/api/metrics?type=${type}&startAt=${startAt}&endAt=${endAt}`)
+      fetch(`${statsBase}/api/metrics?type=${type}&startAt=${startAt}&endAt=${endAt}`)
         .then(r => r.json()).catch(() => []);
     const [br, os, dev, co] = await Promise.all([m('browser'), m('os'), m('device'), m('country')]);
     browsers = br; osList = os; devices = dev; countries = co;
@@ -84,20 +85,20 @@
 
   onMount(async () => {
     // 1. All-time
-    fetch('https://blogapi.476543.xyz/statsapi/alltime')
+    fetch(siteConfig.analytics.statsApi.alltime)
       .then(r => r.json()).then(d => {
         if (d) { total.pageviews = val(d.pageviews); total.visitors = val(d.visitors); total.visits = val(d.visits); }
       }).catch(() => {}).finally(() => loadingAlltime = false);
 
     // 2. Today
     const tr = getTodayRange();
-    fetch(`https://blogapi.476543.xyz/api/stats?startAt=${tr.startAt}&endAt=${tr.endAt}`)
+    fetch(`${statsBase}/api/stats?startAt=${tr.startAt}&endAt=${tr.endAt}`)
       .then(r => r.json()).then(d => {
         if (d) { today.pageviews = val(d.pageviews); today.visitors = val(d.visitors); today.visits = val(d.visits); today.bounces = val(d.bounces); today.totalTime = val(d.totalTime); }
       }).catch(() => {}).finally(() => loadingToday = false);
 
     // 3. Hourly
-    fetch('https://blogapi.476543.xyz/statsapi/last24h?timezone=Asia/Shanghai')
+    fetch(`${statsBase}/statsapi/last24h?timezone=Asia/Shanghai`)
       .then(r => r.json()).then(d => {
         if (Array.isArray(d)) {
           hourlyData = d;
@@ -357,7 +358,7 @@
 
   <!-- Link -->
   <div class="text-center pb-8 select-none">
-    <a href="https://stats.upxuu.com/share/sFftlqBkgk2z9JM2" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-3 border-3 border-[#0284c7] text-[#0284c7] bg-white font-black hover:bg-[#0284c7] hover:text-white transition-all rounded-sm shadow-[4px_4px_0px_0px_#0284c7] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 uppercase tracking-wider text-sm">
+    <a href={siteConfig.analytics.umamiDashboard} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-3 border-3 border-[#0284c7] text-[#0284c7] bg-white font-black hover:bg-[#0284c7] hover:text-white transition-all rounded-sm shadow-[4px_4px_0px_0px_#0284c7] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 uppercase tracking-wider text-sm">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
       Umami
     </a>

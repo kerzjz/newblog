@@ -1,11 +1,13 @@
 ﻿<script lang="ts">
+  import { siteConfig, seoConfig } from '../config/site';
   import { onMount } from 'svelte';
-
-  export let title: string = '';
-  export let description: string = '';
-  export let url: string = '';
-  export let image: string = '';
+  export let title: string = siteConfig.title;
+  export let description: string = seoConfig.defaultDescription;
+  export let url: string = siteConfig.url;
+  export let image: string = seoConfig.defaultImage;
   export let date: string = '';
+  export let readTime: number | null = null;
+  export let tags: string[] = [];
 
   let expanded = false;
   let pageViews = 0;
@@ -21,23 +23,37 @@
     try {
       var p = new URL(shareUrl).pathname;
       if (!p.endsWith('/')) p += '/';
-      const res = await fetch('https://beat.345696.xyz/api/stats?p=' + encodeURIComponent(p), { signal: AbortSignal.timeout(5000) });
+      const res = await fetch('https://blog.api.upxuu.com/api/views?path=' + encodeURIComponent(p), { signal: AbortSignal.timeout(5000) });
       const data = await res.json();
-      if (data) {
-        var v = data[p];
-        pageViews = v !== undefined ? v : 0;
+      if (data && typeof data.views === 'number') {
+        pageViews = data.views;
       }
     } catch {}
   });
 
-  function toggle() { expanded = !expanded; }
+  function toggle() {
+    expanded = !expanded;
+    if (expanded) document.addEventListener('keydown', onKeyDown);
+    else document.removeEventListener('keydown', onKeyDown);
+  }
 
-  function copyLink() {
-    navigator.clipboard.writeText(shareUrl).then(() => { copied = true; setTimeout(() => copied = false, 2000); });
+  function closeShare() {
+    expanded = false;
+    document.removeEventListener('keydown', onKeyDown);
+  }
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      copied = true;
+      setTimeout(() => copied = false, 2000);
+    } catch {
+      copied = false;
+    }
   }
 
   function shareToQQ() {
-    window.open('https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + encodeURIComponent(shareUrl) + '&title=' + encodeURIComponent(title) + '&desc=' + encodeURIComponent(description) + '&summary=' + encodeURIComponent(description) + '&site=Ker ZJZ', '_blank', 'width=700,height=600');
+    window.open('https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=' + encodeURIComponent(shareUrl) + '&title=' + encodeURIComponent(title) + '&desc=' + encodeURIComponent(description) + '&summary=' + encodeURIComponent(description) + '&site=UpXuu', '_blank', 'width=700,height=600');
   }
 
   function shareToX() {
@@ -54,7 +70,11 @@
     document.removeEventListener('keydown', onKeyDown);
   }
 
-  function onKeyDown(e: KeyboardEvent) { if (e.key === 'Escape') closePoster(); }
+  function onKeyDown(e: KeyboardEvent) {
+    if (e.key !== 'Escape') return;
+    if (showPoster) closePoster();
+    else if (expanded) closeShare();
+  }
 
   async function copyPoster() {
     if (!posterDataUrl) return;
@@ -93,186 +113,315 @@
   }
 
   async function generatePoster() {
+    closeShare();
     generatingPoster = true;
     posterError = '';
     posterDataUrl = null;
     try {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d')!;
-      const W = 900;
-      const H = 1200;
-      canvas.width = W;
-      canvas.height = H;
+      const W = 1080;
+      const H = 1080; // 1:1 方形
+      const dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.scale(dpr, dpr);
 
-      // Outer cream + stacked shadow
-      ctx.fillStyle = '#e2e8f0';
+      // ===== 配色：积木粗野主义（天空蓝 + 黄 + 暖白）=====
+      const bg = '#faf8f5';
+      const brand = '#0284c7';
+      const brandSoft = '#e0f2fe';
+      const accent = '#fde68a';
+      const ink = '#0f172a';
+      const muted = '#64748b';
+      const FONT = '"Fredoka", "PingFang SC", "Noto Sans SC", system-ui, sans-serif';
+      const pad = 60;
+      const contentW = W - pad * 2;
+
+      const roundedRect = (x: number, y: number, w: number, h: number, r: number) => {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+      };
+      const fillRound = (x: number, y: number, w: number, h: number, r: number, color: string) => {
+        roundedRect(x, y, w, h, r);
+        ctx.fillStyle = color;
+        ctx.fill();
+      };
+      const ellipsize = (lines: string[], max: number): string[] => {
+        if (lines.length <= max) return lines;
+        const out = lines.slice(0, max);
+        let last = out[max - 1];
+        while (last.length && ctx.measureText(last + '…').width > contentW) last = last.slice(0, -1);
+        out[max - 1] = last + '…';
+        return out;
+      };
+
+      // ===== 背景 + 积木点阵 =====
+      ctx.fillStyle = bg;
       ctx.fillRect(0, 0, W, H);
-      ctx.fillStyle = '#0284c7';
-      ctx.fillRect(18, 18, W - 24, H - 24);
+      ctx.fillStyle = 'rgba(2, 132, 199, 0.07)';
+      for (let gx = 12; gx < W; gx += 24) {
+        for (let gy = 12; gy < H; gy += 24) {
+          ctx.fillRect(gx, gy, 2.2, 2.2);
+        }
+      }
 
-      // Main card
-      ctx.fillStyle = '#faf8f5';
-      ctx.fillRect(8, 8, W - 32, H - 32);
+      // ===== 顶部双色条 =====
+      ctx.fillStyle = brand;
+      ctx.fillRect(0, 0, W, 14);
+      ctx.fillStyle = accent;
+      ctx.fillRect(0, 14, W, 5);
 
-      // Top accent bar
-      ctx.fillStyle = '#f59e0b';
-      ctx.fillRect(8, 8, W - 32, 14);
-
-      // Header band
-      ctx.fillStyle = '#0284c7';
-      ctx.fillRect(8, 22, W - 32, 72);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 28px "Fredoka", "Noto Sans SC", system-ui, sans-serif';
+      // ===== 头部 masthead =====
+      const logoS = 46;
+      const logoX = pad, logoY = 48;
+      ctx.save();
+      ctx.translate(logoX + logoS / 2, logoY + logoS / 2);
+      ctx.rotate(-0.1);
+      ctx.fillStyle = accent;
+      ctx.strokeStyle = brand;
+      ctx.lineWidth = 3;
+      roundedRect(-logoS / 2, -logoS / 2, logoS, logoS, 9);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = brand;
+      ctx.font = `900 26px ${FONT}`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('U', 0, 1);
+      ctx.restore();
       ctx.textAlign = 'left';
-      ctx.fillText('Ker ZJZ', 40, 68);
-      ctx.font = 'bold 16px "Noto Sans SC", system-ui, sans-serif';
-      ctx.fillStyle = '#bae6fd';
-      ctx.fillText('分享文章', 40, 90);
+      ctx.textBaseline = 'alphabetic';
 
-      let y = 120;
-      const pad = 40;
-      const contentW = W - 32 - pad * 2;
+      ctx.fillStyle = ink;
+      ctx.font = `900 27px ${FONT}`;
+      ctx.fillText('UpXuu', logoX + logoS + 18, logoY + 24);
+      ctx.fillStyle = muted;
+      ctx.font = `500 15px ${FONT}`;
+      ctx.fillText('upxuu.com', logoX + logoS + 18, logoY + 46);
 
-      // Cover image
+      // 右侧「文章分享」标签
+      const pillText = '文章分享';
+      ctx.font = `800 19px ${FONT}`;
+      const pillW = ctx.measureText(pillText).width + 40;
+      const pillH = 44;
+      const pillX = W - pad - pillW;
+      const pillY = 48;
+      ctx.save();
+      ctx.shadowColor = accent;
+      ctx.shadowOffsetX = 5;
+      ctx.shadowOffsetY = 5;
+      ctx.shadowBlur = 0;
+      fillRound(pillX, pillY, pillW, pillH, 9, '#ffffff');
+      ctx.restore();
+      ctx.strokeStyle = brand;
+      ctx.lineWidth = 3;
+      roundedRect(pillX, pillY, pillW, pillH, 9);
+      ctx.stroke();
+      ctx.fillStyle = brand;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(pillText, pillX + pillW / 2, pillY + pillH / 2 + 1);
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'alphabetic';
+
+      // ===== 封面（厚边框 + 硬阴影）=====
+      const covX = pad, covY = 122, covW = contentW, covH = 336;
+      const drawCoverPlaceholder = () => {
+        ctx.fillStyle = brandSoft;
+        roundedRect(covX, covY, covW, covH, 20);
+        ctx.fill();
+        ctx.fillStyle = brand;
+        ctx.font = `900 110px ${FONT}`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('U', W / 2, covY + covH / 2 - 12);
+        const bs = 22, gap = 14;
+        const total = bs * 3 + gap * 2;
+        const dotY = covY + covH / 2 + 58;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillStyle = accent; ctx.fillRect(W / 2 - total / 2, dotY, bs, bs);
+        ctx.fillStyle = brand; ctx.fillRect(W / 2 - total / 2 + bs + gap, dotY, bs, bs);
+        ctx.fillStyle = '#7dd3fc'; ctx.fillRect(W / 2 - total / 2 + (bs + gap) * 2, dotY, bs, bs);
+      };
+
+      ctx.save();
+      ctx.shadowColor = brand;
+      ctx.shadowOffsetX = 10;
+      ctx.shadowOffsetY = 10;
+      ctx.shadowBlur = 0;
+      fillRound(covX, covY, covW, covH, 20, '#ffffff');
+      ctx.restore();
       if (image) {
         try {
           const img = await loadImage(image);
-          const boxW = contentW;
-          const boxH = 360;
-          const scale = Math.max(boxW / img.width, boxH / img.height);
-          const sw = boxW / scale;
-          const sh = boxH / scale;
+          const scale = Math.max(covW / img.width, covH / img.height);
+          const sw = covW / scale;
+          const sh = covH / scale;
           const sx = (img.width - sw) / 2;
           const sy = (img.height - sh) / 2;
-
-          ctx.fillStyle = '#0284c7';
-          ctx.fillRect(pad - 4, y - 4, boxW + 8, boxH + 8);
           ctx.save();
-          ctx.beginPath();
-          ctx.rect(pad, y, boxW, boxH);
+          roundedRect(covX, covY, covW, covH, 20);
           ctx.clip();
-          ctx.drawImage(img, sx, sy, sw, sh, pad, y, boxW, boxH);
+          ctx.drawImage(img, sx, sy, sw, sh, covX, covY, covW, covH);
           ctx.restore();
-          y += boxH + 36;
         } catch {
-          y += 12;
+          drawCoverPlaceholder();
         }
       } else {
-        // Decorative block when no cover
-        ctx.fillStyle = '#e0f2fe';
-        ctx.fillRect(pad, y, contentW, 120);
-        ctx.strokeStyle = '#0284c7';
-        ctx.lineWidth = 4;
-        ctx.strokeRect(pad, y, contentW, 120);
-        ctx.fillStyle = '#0284c7';
-        ctx.font = 'bold 42px "Fredoka", system-ui, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('Ker ZJZ', pad + contentW / 2, y + 72);
-        ctx.textAlign = 'left';
-        y += 148;
+        drawCoverPlaceholder();
       }
-
-      // Title
-      ctx.fillStyle = '#0f172a';
-      ctx.font = 'bold 40px "Noto Sans SC", system-ui, sans-serif';
-      const titleLines = wrapText(ctx, title || '无标题', contentW);
-      titleLines.slice(0, 3).forEach((line, i) => {
-        ctx.fillText(line, pad, y + i * 52);
-      });
-      y += Math.min(titleLines.length, 3) * 52 + 18;
-
-      // Meta chips
-      const metaParts: string[] = [];
-      if (date) metaParts.push(date);
-      metaParts.push(`${pageViews} 次阅读`);
-      const meta = metaParts.join('  ·  ');
-      ctx.fillStyle = '#0284c7';
-      ctx.font = 'bold 18px "Noto Sans SC", system-ui, sans-serif';
-      ctx.fillText(meta, pad, y);
-      y += 36;
-
-      // Description
-      if (description) {
-        ctx.fillStyle = '#475569';
-        ctx.font = '22px "Noto Sans SC", system-ui, sans-serif';
-        const descLines = wrapText(ctx, description, contentW);
-        descLines.slice(0, 4).forEach((line, i) => {
-          ctx.fillText(line, pad, y + i * 32);
-        });
-        y += Math.min(descLines.length, 4) * 32 + 28;
-      }
-
-      // Footer card
-      const footerY = H - 220;
-      const footerH = 150;
-      const footerW = contentW;
-      const footerX = pad;
-
-      // Shadow
-      ctx.fillStyle = '#0284c7';
-      ctx.fillRect(footerX + 6, footerY + 6, footerW, footerH);
-      // Card
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(footerX, footerY, footerW, footerH);
-      ctx.strokeStyle = '#0284c7';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(footerX, footerY, footerW, footerH);
-
-      // Avatar
-      const av = 72;
-      const avX = footerX + 24;
-      const avY = footerY + (footerH - av) / 2;
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(avX + av / 2, avY + av / 2, av / 2, 0, Math.PI * 2);
-      ctx.closePath();
-      ctx.clip();
-      try {
-        const avImg = await loadImage('https://kerzjz.qzz.io/images/me.jpg');
-        ctx.drawImage(avImg, avX, avY, av, av);
-      } catch {
-        ctx.fillStyle = '#0284c7';
-        ctx.fillRect(avX, avY, av, av);
-      }
-      ctx.restore();
-      // Avatar ring
-      ctx.strokeStyle = '#0284c7';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.arc(avX + av / 2, avY + av / 2, av / 2, 0, Math.PI * 2);
+      ctx.strokeStyle = brand;
+      ctx.lineWidth = 5;
+      roundedRect(covX, covY, covW, covH, 20);
       ctx.stroke();
 
-      // Name + link
-      ctx.fillStyle = '#0f172a';
-      ctx.font = 'bold 26px "Noto Sans SC", system-ui, sans-serif';
-      ctx.textAlign = 'left';
-      ctx.fillText('Ker ZJZ', avX + av + 20, footerY + 58);
-      ctx.fillStyle = '#0284c7';
-      ctx.font = 'bold 18px "JetBrains Mono", monospace';
-      ctx.fillText('kerzjz.qzz.io', avX + av + 20, footerY + 90);
-      ctx.fillStyle = '#94a3b8';
-      ctx.font = '14px "Noto Sans SC", system-ui, sans-serif';
-      const shortUrl = shareUrl.replace(/^https?:\/\//, '').slice(0, 28);
-      ctx.fillText(shortUrl, avX + av + 20, footerY + 118);
+      // ===== 标题 =====
+      let ty = covY + covH + 66;
+      ctx.fillStyle = ink;
+      ctx.font = `900 44px ${FONT}`;
+      const titleLines = ellipsize(wrapText(ctx, title || '无标题', contentW), 2);
+      titleLines.forEach((line, i) => ctx.fillText(line, pad, ty + i * 58));
+      ty += titleLines.length * 58;
 
-      // QR
-      const qr = 96;
-      const qrX = footerX + footerW - qr - 24;
-      const qrY = footerY + (footerH - qr) / 2;
-      ctx.fillStyle = '#0284c7';
-      ctx.fillRect(qrX - 4, qrY - 4, qr + 8, qr + 8);
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(qrX, qrY, qr, qr);
+      // ===== 摘要 =====
+      if (description) {
+        ty += 28;
+        ctx.fillStyle = muted;
+        ctx.font = `400 22px ${FONT}`;
+        const descLines = ellipsize(wrapText(ctx, description, contentW), 2);
+        descLines.forEach((line, i) => ctx.fillText(line, pad, ty + i * 34));
+        ty += descLines.length * 34;
+      }
+
+      // ===== 元信息 =====
+      ty += 42;
+      const metaY = ty;
+      ctx.fillStyle = accent;
+      ctx.strokeStyle = brand;
+      ctx.lineWidth = 2.5;
+      roundedRect(pad, metaY - 14, 14, 14, 3);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = brand;
+      ctx.font = `700 19px ${FONT}`;
+      const date10 = (date || '').slice(0, 10);
+      const metaParts: string[] = [];
+      if (date10) metaParts.push(date10);
+      if (readTime) metaParts.push(`阅读约 ${readTime} 分钟`);
+      if (pageViews > 0) metaParts.push(`${pageViews} 次阅读`);
+      ctx.fillText(metaParts.join('  ·  '), pad + 26, metaY);
+
+      // ===== 标签（积木药丸）=====
+      ty += 46;
+      ctx.font = `700 20px ${FONT}`;
+      let tx = pad;
+      const tagH = 46;
+      for (const t of (tags || []).slice(0, 3)) {
+        const label = '# ' + t;
+        const w = ctx.measureText(label).width + 40;
+        if (tx + w > W - pad) break;
+        ctx.save();
+        ctx.shadowColor = '#bae6fd';
+        ctx.shadowOffsetX = 4;
+        ctx.shadowOffsetY = 4;
+        ctx.shadowBlur = 0;
+        fillRound(tx, ty, w, tagH, 10, '#ffffff');
+        ctx.restore();
+        ctx.strokeStyle = brand;
+        ctx.lineWidth = 2.5;
+        roundedRect(tx, ty, w, tagH, 10);
+        ctx.stroke();
+        ctx.fillStyle = '#475569';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(label, tx + 20, ty + tagH / 2 + 1);
+        ctx.textBaseline = 'alphabetic';
+        tx += w + 14;
+      }
+
+      // ===== 底部作者卡 =====
+      const footH = 150;
+      const footY = H - pad - footH;
+      ctx.save();
+      ctx.shadowColor = brand;
+      ctx.shadowOffsetX = 8;
+      ctx.shadowOffsetY = 8;
+      ctx.shadowBlur = 0;
+      fillRound(pad, footY, contentW, footH, 18, '#ffffff');
+      ctx.restore();
+      ctx.strokeStyle = brand;
+      ctx.lineWidth = 4;
+      roundedRect(pad, footY, contentW, footH, 18);
+      ctx.stroke();
+
+      const av = 92;
+      const avX = pad + 26;
+      const avY = footY + (footH - av) / 2;
+      ctx.save();
+      roundedRect(avX, avY, av, av, 18);
+      ctx.clip();
       try {
-        const qrImg = await loadImage('https://api.qrserver.com/v1/create-qr-code/?size=120x120&margin=8&data=' + encodeURIComponent(shareUrl));
-        ctx.drawImage(qrImg, qrX + 6, qrY + 6, qr - 12, qr - 12);
-      } catch {}
+        const avImg = await loadImage('https://upxuu.com/images/me.jpg');
+        ctx.drawImage(avImg, avX, avY, av, av);
+      } catch {
+        ctx.fillStyle = brand;
+        ctx.fillRect(avX, avY, av, av);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = `900 44px ${FONT}`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('U', avX + av / 2, avY + av / 2);
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+      }
+      ctx.restore();
+      ctx.strokeStyle = brand;
+      ctx.lineWidth = 3.5;
+      roundedRect(avX, avY, av, av, 18);
+      ctx.stroke();
 
-      // Bottom strip
-      ctx.fillStyle = '#0284c7';
-      ctx.fillRect(8, H - 40, W - 32, 16);
-      ctx.fillStyle = '#f59e0b';
-      ctx.fillRect(8, H - 24, W - 32, 8);
+      ctx.fillStyle = ink;
+      ctx.font = `900 25px ${FONT}`;
+      ctx.fillText('UpXuu', avX + av + 22, footY + 58);
+      ctx.fillStyle = muted;
+      ctx.font = `500 16px ${FONT}`;
+      ctx.fillText('逐光而上！ · upxuu.com', avX + av + 22, footY + 88);
+
+      // 二维码
+      const qr = 108;
+      const qrX = pad + contentW - qr - 22;
+      const qrY = footY + (footH - qr) / 2;
+      fillRound(qrX - 7, qrY - 7, qr + 14, qr + 14, 10, '#ffffff');
+      ctx.strokeStyle = brand;
+      ctx.lineWidth = 2.5;
+      roundedRect(qrX - 7, qrY - 7, qr + 14, qr + 14, 10);
+      ctx.stroke();
+      try {
+        const qrImg = await loadImage('https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=0&data=' + encodeURIComponent(shareUrl));
+        ctx.drawImage(qrImg, qrX, qrY, qr, qr);
+      } catch {
+        ctx.fillStyle = muted;
+        ctx.font = `600 13px ${FONT}`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('二维码', qrX + qr / 2, qrY + qr / 2);
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+      }
+      ctx.fillStyle = muted;
+      ctx.font = `500 15px ${FONT}`;
+      ctx.textAlign = 'right';
+      ctx.fillText('扫描二维码', qrX - 20, footY + footH / 2 - 9);
+      ctx.fillText('阅读全文', qrX - 20, footY + footH / 2 + 15);
+      ctx.textAlign = 'left';
 
       posterDataUrl = canvas.toDataURL('image/png');
       showPoster = true;
@@ -293,67 +442,92 @@
       a.click();
     }
   }
+
+  /**
+   * Portal：把弹窗移动到 <body> 顶层。
+   * 文章卡片有 transform 动画，会让 position:fixed 退化为相对定位，
+   * 导致弹窗被困在卡片里、无法覆盖全屏。挂到 body 后彻底脱离任何容器。
+   */
+  function portal(node: HTMLElement) {
+    document.body.appendChild(node);
+    return { destroy() { node.remove(); } };
+  }
 </script>
 
 <button
   on:click={toggle}
-  class="w-9 h-9 rounded-sm border-2 border-[#0284c7] bg-[#fde68a] dark:bg-[#fde68a]/20 text-[#0284c7] flex items-center justify-center cursor-pointer shadow-[2px_2px_0px_0px_#0284c7] hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_#0284c7] active:translate-y-0 active:shadow-none transition-all duration-150 shrink-0"
-  aria-label="分享"
+  class="inline-flex items-center gap-2 h-11 px-4 rounded-sm border-[3px] border-[#0284c7] bg-[#fde68a] dark:bg-[#fde68a]/20 text-[#0284c7] font-black text-sm cursor-pointer shadow-[3px_3px_0px_0px_#0284c7] hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_#0284c7] active:translate-y-0 active:shadow-none transition-all duration-150 shrink-0"
+  aria-label="分享文章"
 >
-  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
     <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
   </svg>
+  <span>分享</span>
 </button>
 
 {#if expanded}
-  <div class="mt-3 border-t-2 border-dashed border-[#0284c7]/20 pt-3 space-y-2">
-    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-      <button on:click={generatePoster} disabled={generatingPoster} class="flex items-center gap-2 p-2.5 bg-white dark:bg-slate-700 border-2 border-[#0284c7] rounded-sm shadow-[2px_2px_0px_0px_#0284c7] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all text-xs font-black text-[#0284c7] cursor-pointer disabled:opacity-50">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-        {#if generatingPoster}<span class="animate-spin">⟳</span>{:else}海报{/if}
-      </button>
-      <button on:click={shareToQQ} class="flex items-center gap-2 p-2.5 bg-white dark:bg-slate-700 border-2 border-[#0284c7] rounded-sm shadow-[2px_2px_0px_0px_#0284c7] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all text-xs font-black text-[#0284c7] cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 fill-[#0284c7]" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.5 14h-9c-.83 0-1.5-.67-1.5-1.5S6.67 13 7.5 13h9c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5zm0-5h-9c-.83 0-1.5-.67-1.5-1.5S6.67 8 7.5 8h9c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/></svg>
-        QQ
-      </button>
-      <button on:click={shareToX} class="flex items-center gap-2 p-2.5 bg-white dark:bg-slate-700 border-2 border-[#0284c7] rounded-sm shadow-[2px_2px_0px_0px_#0284c7] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all text-xs font-black text-[#0284c7] cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        X
-      </button>
-      <button on:click={shareToWeChat} class="flex items-center gap-2 p-2.5 bg-white dark:bg-slate-700 border-2 border-[#0284c7] rounded-sm shadow-[2px_2px_0px_0px_#0284c7] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all text-xs font-black text-[#0284c7] cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 fill-[#07c160]" viewBox="0 0 24 24"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348z"/></svg>
-        微信
-      </button>
-      <button on:click={copyLink} class="flex items-center gap-2 p-2.5 bg-white dark:bg-slate-700 border-2 border-[#0284c7] rounded-sm shadow-[2px_2px_0px_0px_#0284c7] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all text-xs font-black text-[#0284c7] cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
-        {copied ? '已复制' : '复制链接'}
-      </button>
-    </div>
+  <div use:portal class="fixed inset-0 z-[2147483000] flex items-end sm:items-center justify-center p-0 sm:p-6" role="presentation" on:click={closeShare}>
+    <div class="absolute inset-0 bg-slate-900/35 backdrop-blur-sm"></div>
+    <section
+      class="relative w-full sm:max-w-lg max-h-[88vh] overflow-y-auto rounded-t-[28px] sm:rounded-[28px] bg-[#f8fbff] dark:bg-slate-800 border border-[#c5e2f2] shadow-[0_24px_80px_rgba(23,50,77,0.25)]"
+      role="dialog" aria-modal="true" aria-labelledby="share-dialog-title" on:click|stopPropagation
+    >
+      <div class="sticky top-0 z-10 flex items-center justify-between gap-4 px-5 py-4 border-b border-[#dceefa] bg-[#f8fbff]/95 dark:bg-slate-800/95 backdrop-blur">
+        <div>
+          <h2 id="share-dialog-title" class="text-lg font-bold text-[#17324d] dark:text-slate-100">分享这篇文章</h2>
+          <p class="mt-1 text-xs text-[#6b8298]">选择方式，把内容分享给朋友</p>
+        </div>
+        <button type="button" on:click={closeShare} aria-label="关闭分享窗口" class="w-10 h-10 shrink-0 rounded-full bg-[#dceefa] text-[#4b83a5] hover:bg-[#c5e2f2] transition-colors flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
 
-    {#if posterError}
-      <p class="text-xs font-bold text-red-500 text-center">{posterError}</p>
-    {/if}
+      <div class="p-5 sm:p-6">
+        <div class="flex items-start gap-3 p-4 rounded-2xl bg-white dark:bg-slate-700 border border-[#dceefa]">
+          {#if image}<img src={image} alt="" class="w-14 h-14 rounded-xl object-cover shrink-0" />{/if}
+          <div class="min-w-0">
+            <h3 class="font-bold text-[#17324d] dark:text-slate-100 line-clamp-2">{title || '无标题'}</h3>
+            <p class="mt-1 text-xs text-[#6b8298] line-clamp-2">{description || '来自 UpXuu 的文章分享'}</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-5">
+          <button type="button" on:click={() => { closeShare(); generatePoster(); }} disabled={generatingPoster} class="min-h-16 rounded-2xl bg-[#78b9dc] text-white font-bold text-sm hover:bg-[#5fa8d0] transition-colors disabled:opacity-60 flex flex-col items-center justify-center gap-1">
+            <span class="text-lg">{generatingPoster ? '⟳' : '▧'}</span><span>{generatingPoster ? '生成中…' : '海报'}</span>
+          </button>
+          <button type="button" on:click={copyLink} class="min-h-16 rounded-2xl bg-white dark:bg-slate-700 border border-[#c5e2f2] text-[#4b83a5] font-bold text-sm hover:bg-[#eef7fc] transition-colors flex flex-col items-center justify-center gap-1">
+            <span class="text-lg">⌁</span><span>{copied ? '已复制' : '复制链接'}</span>
+          </button>
+          <button type="button" on:click={shareToWeChat} class="min-h-16 rounded-2xl bg-white dark:bg-slate-700 border border-[#c5e2f2] text-[#4b83a5] font-bold text-sm hover:bg-[#eef7fc] transition-colors flex flex-col items-center justify-center gap-1">
+            <span class="text-lg text-[#07c160]">●</span><span>微信</span>
+          </button>
+          <button type="button" on:click={shareToQQ} class="min-h-16 rounded-2xl bg-white dark:bg-slate-700 border border-[#c5e2f2] text-[#4b83a5] font-bold text-sm hover:bg-[#eef7fc] transition-colors flex flex-col items-center justify-center gap-1">
+            <span class="text-lg">Q</span><span>QQ 空间</span>
+          </button>
+          <button type="button" on:click={shareToX} class="min-h-16 rounded-2xl bg-white dark:bg-slate-700 border border-[#c5e2f2] text-[#4b83a5] font-bold text-sm hover:bg-[#eef7fc] transition-colors flex flex-col items-center justify-center gap-1">
+            <span class="text-lg">𝕏</span><span>分享到 X</span>
+          </button>
+        </div>
+        {#if posterError}<p class="mt-3 text-center text-xs font-medium text-red-500">{posterError}</p>{/if}
+      </div>
+    </section>
   </div>
 {/if}
 
 {#if showPoster && posterDataUrl}
-  <div class="fixed inset-0 z-[9999]" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);" role="dialog" aria-modal="true" on:click={closePoster}>
-    <div class="absolute bottom-0 sm:bottom-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-full sm:w-[420px] max-h-[90vh] bg-[rgba(250,248,245,0.95)] dark:bg-slate-800 border-t-[6px] sm:border-[6px] border-[#0284c7] rounded-t-3xl sm:rounded-sm shadow-[0_-20px_60px_-10px_rgba(0,0,0,0.5),6px_6px_0px_0px_#0284c7] overflow-y-auto" on:click|stopPropagation>
-      <div class="flex items-center justify-between p-4 border-b-4 border-[#0284c7] bg-white dark:bg-slate-800 sticky top-0 z-10">
-        <h3 class="font-black text-[#0284c7] text-base uppercase tracking-wider">分享卡片</h3>
-        <button on:click={closePoster} class="w-9 h-9 flex items-center justify-center hover:bg-[#fde68a] dark:hover:bg-[#fde68a]/20 rounded-sm transition-all text-[#0284c7] cursor-pointer border-2 border-[#0284c7] bg-white dark:bg-slate-700 shadow-[2px_2px_0px_0px_#0284c7] active:translate-y-0.5 active:shadow-none">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 stroke-[3]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+  <div use:portal class="fixed inset-0 z-[2147483001] flex items-end sm:items-center justify-center p-0 sm:p-6" style="background: rgba(23,50,77,0.38); backdrop-filter: blur(8px);" role="dialog" aria-modal="true" on:click={closePoster}>
+    <div class="w-full sm:max-w-[480px] max-h-[94vh] overflow-y-auto bg-[#f8fbff] dark:bg-slate-800 rounded-t-[28px] sm:rounded-[28px] shadow-[0_24px_80px_rgba(23,50,77,0.28)] border border-[#c5e2f2]" on:click|stopPropagation>
+      <div class="flex items-center justify-between px-5 py-4 border-b border-[#dceefa] sticky top-0 z-10 bg-[#f8fbff]/95 dark:bg-slate-800/95 backdrop-blur">
+        <div><h3 class="font-bold text-[#17324d] dark:text-slate-100 text-base">分享海报</h3><p class="text-xs text-[#6b8298] mt-0.5">下载或复制给朋友</p></div>
+        <button on:click={closePoster} aria-label="关闭" class="w-9 h-9 flex items-center justify-center rounded-full bg-[#dceefa] text-[#4b83a5] hover:bg-[#c5e2f2] transition-colors cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
       </div>
-      <div class="p-4">
-        <img src={posterDataUrl} alt="海报" class="w-full h-auto rounded-sm border-2 border-[#0284c7]/20" />
-        <div class="mt-3 flex gap-2">
-          <button on:click={downloadPoster} class="flex-1 bg-[#0284c7] text-white font-black py-2.5 border-3 border-[#0284c7] rounded-sm shadow-[3px_3px_0px_0px_#fde68a] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all text-sm cursor-pointer">
-            下载
-          </button>
-          <button on:click={copyPoster} class="flex-1 bg-white dark:bg-slate-700 text-[#0284c7] font-black py-2.5 border-3 border-[#0284c7] rounded-sm shadow-[3px_3px_0px_0px_#0284c7] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all text-sm cursor-pointer">
-            复制
-          </button>
+      <div class="p-4 sm:p-5">
+        <img src={posterDataUrl} alt="海报" class="w-full h-auto rounded-2xl border border-[#c5e2f2] shadow-sm" />
+        <div class="mt-4 flex gap-3">
+          <button on:click={downloadPoster} class="flex-1 bg-[#78b9dc] text-white font-bold py-3 rounded-xl hover:bg-[#5fa8d0] transition-colors text-sm cursor-pointer">下载海报</button>
+          <button on:click={copyPoster} class="flex-1 bg-white dark:bg-slate-700 text-[#4b83a5] font-bold py-3 rounded-xl border border-[#c5e2f2] hover:bg-[#eef7fc] transition-colors text-sm cursor-pointer">复制图片</button>
         </div>
       </div>
     </div>

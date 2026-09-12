@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { siteConfig } from '../config/site';
 
   interface CalendarPost {
     slug: string;
@@ -65,7 +66,7 @@
 
 <div class="bg-white dark:bg-slate-800 border-4 border-[#0284c7] p-3.5 shadow-[6px_6px_0px_0px_#0284c7] rounded-sm w-full relative animate-card-entrance opacity-0" data-nosnippet aria-hidden="true" style="animation-delay: 0.08s">
   <div class="text-center font-mono text-[11px] font-black text-slate-450 mb-1.5 uppercase tracking-widest block select-none">
-    #Ker ZJZ的创作日历
+    #{siteConfig.title}的创作日历
   </div>
   
   <div class="flex justify-between items-center mb-4 border-b-2 border-dashed border-[#0284c7]/20 pb-2">

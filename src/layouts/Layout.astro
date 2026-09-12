@@ -336,10 +336,10 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).href;
       </footer>
     </div>
 
-<script is:inline>
+<script is:inline define:vars={{ __startTime: siteConfig.startTime.getTime() }}>
   if (!window._uptimeStarted) {
     window._uptimeStarted = true;
-    const start = new Date(2026, 6, 31, 8, 40, 0);
+    const start = new Date(__startTime);
     setInterval(function() {
       const el = document.getElementById('uptime-display');
       if (!el) return;
@@ -352,7 +352,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).href;
     }, 1000);
   }
 </script>
-<script is:inline>
+<script is:inline define:vars={{ __pageTrackApi: siteConfig.analytics.pageTrackApi }}>
   (function () {
     var KEY = 'xuhome-bg-idx';
 
@@ -448,7 +448,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).href;
     // (beat.js loads once in <head>; its pushState hook may not fire
     //  reliably with Astro View Transitions, so we send directly)
     function trackPage() {
-      var url = 'https://beat.345696.xyz/api/track?p=' + encodeURIComponent(location.pathname) + location.hash;
+      var url = __pageTrackApi + '?p=' + encodeURIComponent(location.pathname) + location.hash;
       if (navigator.sendBeacon) {
         navigator.sendBeacon(url);
       } else {
