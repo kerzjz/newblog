@@ -54,7 +54,7 @@
 {#if !isMobile}
 <div
   id="custom-cursor"
-  class="fixed pointer-events-none z-[9999] border-2 border-[#0284c7]"
+  class="fixed pointer-events-none z-[99999999] border-2 border-[#0284c7]"
   style="
     left: {x}px;
     top: {y}px;

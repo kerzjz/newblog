@@ -180,6 +180,7 @@
       ctx.fillRect(0, 14, W, 5);
 
       // ===== 头部 masthead =====
+      // 硬编码要改
       const logoS = 46;
       const logoX = pad, logoY = 48;
       ctx.save();
@@ -195,17 +196,17 @@
       ctx.font = `900 26px ${FONT}`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('U', 0, 1);
+      ctx.fillText('K', 0, 1);
       ctx.restore();
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
 
       ctx.fillStyle = ink;
       ctx.font = `900 27px ${FONT}`;
-      ctx.fillText(`${title}`, logoX + logoS + 18, logoY + 24);
+      ctx.fillText(`${siteConfig.title}`, logoX + logoS + 18, logoY + 24);
       ctx.fillStyle = muted;
       ctx.font = `500 15px ${FONT}`;
-      ctx.fillText(`${url}`, logoX + logoS + 18, logoY + 46);
+      ctx.fillText(`${siteConfig.url}`, logoX + logoS + 18, logoY + 46);
 
       // 右侧「文章分享」标签
       const pillText = '文章分享';
@@ -242,7 +243,7 @@
         ctx.font = `900 110px ${FONT}`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('U', W / 2, covY + covH / 2 - 12);
+        ctx.fillText(`${siteConfig.title}`, W / 2, covY + covH / 2 - 12);
         const bs = 22, gap = 14;
         const total = bs * 3 + gap * 2;
         const dotY = covY + covH / 2 + 58;
@@ -390,7 +391,7 @@
 
       ctx.fillStyle = ink;
       ctx.font = `900 25px ${FONT}`;
-      ctx.fillText(`${title}`, avX + av + 22, footY + 58);
+      ctx.fillText(`${siteConfig.title}`, avX + av + 22, footY + 58);
       ctx.fillStyle = muted;
       ctx.font = `500 16px ${FONT}`;
       ctx.fillText(`${url}`, avX + av + 22, footY + 88);
@@ -438,7 +439,7 @@
     if (posterDataUrl) {
       const a = document.createElement('a');
       a.href = posterDataUrl;
-      a.download = 'upxuu-poster-' + Date.now() + '.png';
+      a.download = 'poster-' + Date.now() + '.png';
       a.click();
     }
   }

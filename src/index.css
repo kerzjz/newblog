@@ -27,7 +27,7 @@
   --z-overlay: 2000;
   --z-overlay-panel: 2001;
   --z-modal: 3000;
-  --z-custom-cursor: 9999;
+  --z-custom-cursor: 99999999;
 }
 @media (min-width: 640px) {
   :root {
