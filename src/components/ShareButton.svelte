@@ -1,4 +1,6 @@
 ﻿<script lang="ts">
+// SPDX-FileCopyrightText: ImUpXuu
+// SPDX-License-Identifier: MIT
   import { siteConfig, seoConfig } from '../config/site';
   import { onMount } from 'svelte';
   export let title: string = siteConfig.title;
