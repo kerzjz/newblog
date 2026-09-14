@@ -6,6 +6,8 @@
 export const siteConfig = {
   /** 站点标题（显示在导航栏和浏览器标题中） */
   title: "Ker ZJZ",
+  /** 首字母（分享海报） */
+  initial: "K", 
   /** 站点副标题（用 "/" 分隔多句，首页打字动画会轮流展示） */
   subtitle: "HI I AM KERZJZ / KZ AND YOU",
   /** 站点描述（用于 SEO 和社交分享） */

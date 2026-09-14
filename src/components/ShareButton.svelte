@@ -1,9 +1,11 @@
 ﻿<script lang="ts">
 // SPDX-FileCopyrightText: ImUpXuu
 // SPDX-License-Identifier: MIT
+// 部分代码复制自 ImUpXuu/xuhome
   import { siteConfig, seoConfig } from '../config/site';
   import { onMount } from 'svelte';
   export let title: string = siteConfig.title;
+  export let initial: string = siteConfig.initial;
   export let description: string = seoConfig.defaultDescription;
   export let url: string = siteConfig.url;
   export let image: string = seoConfig.defaultImage;
@@ -63,17 +65,17 @@
   }
 
   // 复用原有的 title、description、shareUrl 变量，不新增额外字符串变量
-  function shareToDoubao() {
+function shareToDoubao() {
   const sendText = `阅读这篇名为“${title}”的文章，地址为${shareUrl}，并总结主要内容`;
-  const actionObj = {
-    pluginId: "Send_Message",
-    payload: {
-      text: sendText
-    }
-  };
-  const actionParam = encodeURIComponent(JSON.stringify(actionObj));
-  const jumpUrl = `https://www.doubao.com/chat/url-action?action=${actionParam}`;
-  window.open(jumpUrl, '_blank', 'width=800,height=600');
+  // 复制文本到剪贴板
+  navigator.clipboard.writeText(sendText)
+    .then(() => {
+      alert("已复制指令，打开豆包粘贴即可");
+    })
+    .catch(err => {
+      console.error("复制失败：", err);
+      alert("复制失败，请手动复制");
+    });
 }
   
   function shareToWeChat() {
@@ -212,7 +214,7 @@
       ctx.font = `900 26px ${FONT}`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('K', 0, 1);
+      ctx.fillText(`${initial}`, 0, 1);
       ctx.restore();
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
