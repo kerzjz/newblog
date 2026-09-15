@@ -1,0 +1,112 @@
+name: Deploy Zero-Dep Markdown Blog
+
+on:
+  push:
+    branches: [ main ]
+    # 🌟 核心优化：只有当 src/content/posts 目录下的文件发生变化时，才触发工作流
+    paths:
+      - 'src/content/posts/**'
+  workflow_dispatch: # 保留手动触发入口，方便随时强制刷新
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true # 取消正在运行的旧部署，防止并发冲突
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Generate index.html
+        run: |
+          ARTICLES_SRC_DIR="src/content/posts"
+          DEPLOY_POSTS_DIR="posts"
+          OUTPUT_FILE="./index.html"
+
+          # 1. 确保源目录存在，防止空仓库报错
+          mkdir -p "${ARTICLES_SRC_DIR}"
+
+          # 2. 动态获取仓库名，自动适配项目 Pages 与用户主页 Pages
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          if [ -n "$REPO_NAME" ]; then
+            BASE="/$REPO_NAME"
+          else
+            BASE=""
+          fi
+
+          # 3. 生成 HTML 头部
+          cat << 'HTMLEOF' > "${OUTPUT_FILE}"
+          <!DOCTYPE html>
+          <html lang="zh-CN">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Ker ZJZ</title>
+              <style>
+                  body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; color: #333; }
+                  a { text-decoration: none; color: #0077cc; }
+                  a:hover { text-decoration: underline; }
+                  ul { padding-left: 1.5rem; }
+                  li { margin-bottom: 0.5rem; }
+              </style>
+          </head>
+          <body>
+              <h1>📖 博客目录</h1>
+              <p>专为老设备优化的纯文本阅读模式。</p>
+              <ul id="article-list">
+          HTMLEOF
+
+          # 4. 遍历并生成列表（循环内直接输出真实部署路径）
+          shopt -s nullglob
+          for file in "${ARTICLES_SRC_DIR}"/*.md; do
+            [ -f "$file" ] || continue
+            filename=$(basename "$file")
+            title="${filename%.md}"
+            
+            # HTML 转义，防止特殊字符破坏页面
+            title_escaped=$(echo "$title" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'\''/\&#39;/g')
+            
+            # ✅ 核心：直接输出正确的 BASE 路径，彻底抛弃事后 sed 替换
+            echo "    <li><a href=\"${BASE}/${DEPLOY_POSTS_DIR}/${filename}\">${title_escaped}</a></li>" >> "${OUTPUT_FILE}"
+          done
+          shopt -u nullglob
+
+          # 5. 闭合 HTML
+          cat << 'HTMLEOF' >> "${OUTPUT_FILE}"
+              </ul>
+          </body>
+          </html>
+          HTMLEOF
+          
+          echo "✅ index.html 生成完毕！"
+
+      - name: Prepare Artifact
+        run: |
+          mkdir -p ./lite-site
+          cp index.html ./lite-site/
+          # 将源目录打包至 lite-site/posts
+          cp -r src/content/posts ./lite-site/posts
+          echo "✅ 打包完成，lite-site 目录结构："
+          ls -R ./lite-site
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./lite-site
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
