@@ -65,12 +65,12 @@
   }
 
   // 复用原有的 title、description、shareUrl 变量，不新增额外字符串变量
-function shareToDoubao() {
+function shareToAI() {
   const sendText = `阅读这篇名为“${title}”的文章，地址为${shareUrl}，并总结主要内容`;
   // 复制文本到剪贴板
   navigator.clipboard.writeText(sendText)
     .then(() => {
-      alert("已复制指令，打开豆包粘贴即可");
+      alert("已复制指令，打开AI粘贴即可");
     })
     .catch(err => {
       console.error("复制失败：", err);
@@ -526,8 +526,8 @@ function shareToDoubao() {
           <button type="button" on:click={shareToX} class="min-h-16 rounded-2xl bg-white dark:bg-slate-700 border border-[#c5e2f2] text-[#4b83a5] font-bold text-sm hover:bg-[#eef7fc] transition-colors flex flex-col items-center justify-center gap-1">
             <span class="text-lg">𝕏</span><span>分享到 X</span>
           </button>
-          <button type="button" on:click={shareToDoubao} class="min-h-16 rounded-2xl bg-white dark:bg-slate-700 border border-[#c5e2f2] text-[#4b83a5] font-bold text-sm hover:bg-[#eef7fc] transition-colors flex flex-col items-center justify-center gap-1">
-            <span class="text-lg">豆包</span><span>分享给 豆包</span>
+          <button type="button" on:click={shareToAI} class="min-h-16 rounded-2xl bg-white dark:bg-slate-700 border border-[#c5e2f2] text-[#4b83a5] font-bold text-sm hover:bg-[#eef7fc] transition-colors flex flex-col items-center justify-center gap-1">
+            <span class="text-lg">AI</span><span>分享给 AI</span>
           </button>
         </div>
         {#if posterError}<p class="mt-3 text-center text-xs font-medium text-red-500">{posterError}</p>{/if}
