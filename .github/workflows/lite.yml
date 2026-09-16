@@ -64,8 +64,8 @@ jobs:
               </style>
           </head>
           <body>
-              <h1>📖 博客目录</h1>
-              <p>专为老设备优化的纯文本阅读模式。</p>
+              <h1>Ker ZJZ</h1>
+              <p>您已被重定向到专为老设备优化的纯文本阅读页面，因为您的浏览器可能版本过旧，无法兼容原版页面，建议您更新浏览器。如果您认为这是一个错误，请访问 <a href="https://kerzjz.qzz.io?force=modern">https://kerzjz.qzz.io?force=modern</a></p>
               <ul id="article-list">
           HTMLEOF
 

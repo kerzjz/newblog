@@ -21,6 +21,7 @@ export const siteConfig = {
   /** 作者签名/座右铭（显示在 AuthorCard 侧边栏） */
   signature: "Stay hungry, stay foolish. ",
   defaultBgUrl: "/images/bg.jpg",
+  fallbackUrl: "https://kerzjz.github.io/newblog",
   
   /** 社交链接（AuthorCard、页脚等处使用，关于页的“找到我”在下方，需单独修改） */
   socials: {
@@ -39,7 +40,7 @@ export const siteConfig = {
     qq: "3869843633",
     /** QQ群链接（欢迎提示中使用） */
         /** 订阅链接（欢迎提示中的"订阅"按钮，指向 GitHub Issues 等） */
-    subscribe: "https://github.com/kerzjz/kerzjz.github.io/issues",
+    subscribe: "https://github.com/kerzjz/newblog/issues",
   },
 
 

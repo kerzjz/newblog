@@ -9,6 +9,7 @@ import WelcomeToast from '../components/WelcomeToast.astro';
 import { PageBanner } from '../components/PageBanner';
 import { execSync } from 'child_process';
 import '../index.css';
+const FALLBACK_URL = siteConfig.fallbackUrl;
 // 删掉旧的DEFAULT_BG_URL常量
 const DEFAULT_BG_URL = siteConfig.defaultBgUrl;
 // 下面原有所有代码不动，直接继续使用变量 DEFAULT_BG_URL
@@ -54,6 +55,49 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).href;
 <!doctype html>
 <html lang="zh-CN">
   <head>
+    <!-- 放在 <head> 最顶部 -->
+    <!-- 放在 <head> 最顶部 -->
+    <script is:inline>
+    (function() {
+      var searchRaw = location.search.slice(1);
+      var force = false;
+      if (searchRaw) {
+        var pairs = searchRaw.split('&');
+        for (var i = 0; i < pairs.length; i++) {
+          var kv = pairs[i].split('=');
+          if (kv[0] === 'force') {
+            force = true;
+            break;
+          }
+        }
+      }
+      if (force) return;
+
+      function needFallback() {
+        try {
+          if (typeof Promise === 'undefined') return true;
+          if (typeof fetch === 'undefined') return true;
+          if (!('IntersectionObserver' in window)) return true;
+          if (!CSS.supports('display', 'grid')) return true;
+          if (!CSS.supports('color', 'var(--primary)')) return true;
+          return false;
+        } catch (e) {
+          return true;
+        }
+      }
+
+      if (needFallback()) {
+        // ✅ 构建时直接把值塞进来，输出后就是纯静态字符串，浏览器无额外工作
+        location.href = '{FALLBACK_URL}';
+      }
+    })();
+    </script>
+
+    <noscript>
+      <meta http-equiv="refresh" content="1;url={FALLBACK_URL}">
+      <p>正在跳转至基础版本页面，请稍候...</p>
+    </noscript>
+
     <meta charset="UTF-8" />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
