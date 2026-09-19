@@ -1,112 +1,80 @@
-name: Deploy Zero-Dep Markdown Blog
+name: Notify Blog Deployment
 
 on:
   push:
     branches: [ main ]
-    # 🌟 核心优化：只有当 src/content/posts 目录下的文件发生变化时，才触发工作流
     paths:
       - 'src/content/posts/**'
-  workflow_dispatch: # 保留手动触发入口，方便随时强制刷新
+  workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true # 取消正在运行的旧部署，防止并发冲突
+  issues: write
 
 jobs:
-  deploy:
+  notify:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
 
-      - name: Generate index.html
+      - name: Parse Markdown and Create Issues
         run: |
-          ARTICLES_SRC_DIR="src/content/posts"
-          DEPLOY_POSTS_DIR="posts"
-          OUTPUT_FILE="./index.html"
+          # 配置目标仓库（仓库B）
+          TARGET_OWNER="kerzjz"
+          TARGET_REPO="kerzjz.github.io"
 
-          # 1. 确保源目录存在，防止空仓库报错
-          mkdir -p "${ARTICLES_SRC_DIR}"
+          ARTICLES_DIR="src/content/posts"
 
-          # 2. 动态获取仓库名，自动适配项目 Pages 与用户主页 Pages
-          REPO_NAME="${GITHUB_REPOSITORY#*/}"
-          if [ -n "$REPO_NAME" ]; then
-            BASE="/$REPO_NAME"
-          else
-            BASE=""
-          fi
-
-          # 3. 生成 HTML 头部
-          cat << 'HTMLEOF' > "${OUTPUT_FILE}"
-          <!DOCTYPE html>
-          <html lang="zh-CN">
-          <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>Ker ZJZ</title>
-              <style>
-                  body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; color: #333; }
-                  a { text-decoration: none; color: #0077cc; }
-                  a:hover { text-decoration: underline; }
-                  ul { padding-left: 1.5rem; }
-                  li { margin-bottom: 0.5rem; }
-              </style>
-          </head>
-          <body>
-              <h1>Ker ZJZ</h1>
-              <p>您已被重定向到专为老设备优化的纯文本阅读页面，因为您的浏览器可能版本过旧，无法兼容原版页面，建议您更新浏览器。如果您认为这是一个错误，请访问 <a href="https://kerzjz.qzz.io?force=modern">https://kerzjz.qzz.io?force=modern</a></p>
-              <ul id="article-list">
-          HTMLEOF
-
-          # 4. 遍历并生成列表（循环内直接输出真实部署路径）
           shopt -s nullglob
-          for file in "${ARTICLES_SRC_DIR}"/*.md; do
+          for file in "${ARTICLES_DIR}"/*.md; do
             [ -f "$file" ] || continue
             filename=$(basename "$file")
-            title="${filename%.md}"
-            
-            # HTML 转义，防止特殊字符破坏页面
-            title_escaped=$(echo "$title" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'\''/\&#39;/g')
-            
-            # ✅ 核心：直接输出正确的 BASE 路径，彻底抛弃事后 sed 替换
-            echo "    <li><a href=\"${BASE}/${DEPLOY_POSTS_DIR}/${filename}\">${title_escaped}</a></li>" >> "${OUTPUT_FILE}"
+
+            # 解析 frontmatter 中的 title
+            title=$(sed -n '/^---$/,/^---$/p' "$file" | grep '^title:' | sed 's/^title:[[:space:]]*//;s/^"//;s/"$//;s/[[:space:]]*$//')
+
+            # 解析 category 作为标签
+            category=$(sed -n '/^---$/,/^---$/p' "$file" | grep '^category:' | sed 's/^category:[[:space:]]*//;s/^"//;s/"$//;s/[[:space:]]*$//')
+
+            # 解析 tags 数组
+            tags_raw=$(sed -n '/^---$/,/^---$/p' "$file" | grep '^tags:' | sed 's/^tags:[[:space:]]*//')
+            # 将 ["tag1", "tag2"] 格式转为逗号分隔（逗号后不加空格，gh 才能正确拆分）
+            tags=$(echo "$tags_raw" | sed 's/\[//;s/\]//;s/"//g;s/,/,/g;s/^[[:space:]]*//')
+
+            # 提取正文内容（frontmatter 之后的部分）
+            body=$(sed '1,/^---$/d' "$file" | sed '1,/^---$/d')
+
+            # 构建 Issue 内容
+            issue_body="## 文章元数据
+
+- **发布时间**：$(grep '^published:' "$file" | sed 's/^published:[[:space:]]*//')
+- **分类**：${category}
+- **标签**：${tags}
+
+---
+
+## 正文
+
+${body}"
+
+            # 构建 labels（category + tags）
+            labels="${category}"
+            if [ -n "$tags" ]; then
+              labels="${labels},${tags}"
+            fi
+
+            # 调用 GitHub API 创建 Issue
+            gh issue create \
+              --repo "${TARGET_OWNER}/${TARGET_REPO}" \
+              --title "${title}" \
+              --body "${issue_body}" \
+              --label "${labels}" \
+
+              || echo "⚠️ 创建 Issue 失败: ${filename}"
+
+            echo "✅ 已提交 Issue: ${title}"
           done
           shopt -u nullglob
-
-          # 5. 闭合 HTML
-          cat << 'HTMLEOF' >> "${OUTPUT_FILE}"
-              </ul>
-          </body>
-          </html>
-          HTMLEOF
-          
-          echo "✅ index.html 生成完毕！"
-
-      - name: Prepare Artifact
-        run: |
-          mkdir -p ./lite-site
-          cp index.html ./lite-site/
-          # 将源目录打包至 lite-site/posts
-          cp -r src/content/posts ./lite-site/posts
-          echo "✅ 打包完成，lite-site 目录结构："
-          ls -R ./lite-site
-
-      - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: ./lite-site
-      
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
