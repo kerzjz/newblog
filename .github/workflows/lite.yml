@@ -20,55 +20,52 @@ jobs:
 
       - name: Parse Markdown and Create Issues
         run: |
-          # 配置目标仓库（仓库B）
           TARGET_OWNER="kerzjz"
           TARGET_REPO="kerzjz.github.io"
-
           ARTICLES_DIR="src/content/posts"
+          TEMP_BODY_FILE=$(mktemp)
 
           shopt -s nullglob
           for file in "${ARTICLES_DIR}"/*.md; do
             [ -f "$file" ] || continue
             filename=$(basename "$file")
 
-            # 解析 frontmatter 中的 title
+            # 解析 frontmatter
             title=$(sed -n '/^---$/,/^---$/p' "$file" | grep '^title:' | sed 's/^title:[[:space:]]*//;s/^"//;s/"$//;s/[[:space:]]*$//')
-
-            # 解析 category 作为标签
             category=$(sed -n '/^---$/,/^---$/p' "$file" | grep '^category:' | sed 's/^category:[[:space:]]*//;s/^"//;s/"$//;s/[[:space:]]*$//')
-
-            # 解析 tags 数组
             tags_raw=$(sed -n '/^---$/,/^---$/p' "$file" | grep '^tags:' | sed 's/^tags:[[:space:]]*//')
-            # 将 ["tag1", "tag2"] 格式转为逗号分隔（逗号后不加空格，gh 才能正确拆分）
             tags=$(echo "$tags_raw" | sed 's/\[//;s/\]//;s/"//g;s/,/,/g;s/^[[:space:]]*//')
+            published=$(grep '^published:' "$file" | sed 's/^published:[[:space:]]*//')
 
-            # 提取正文内容（frontmatter 之后的部分）
-            body=$(sed '1,/^---$/d' "$file" | sed '1,/^---$/d')
+            # 提取正文（frontmatter 之后的内容）
+            body=$(awk '/^---$/{n++;next} n>=2' "$file")
 
-            # 构建 Issue 内容
-            issue_body="## 文章元数据
+            # 把 Issue 内容写入临时文件，完全避开 Shell 转义
+            cat > "${TEMP_BODY_FILE}" << BODYEOF
+            ## 文章元数据
 
-- **发布时间**：$(grep '^published:' "$file" | sed 's/^published:[[:space:]]*//')
-- **分类**：${category}
-- **标签**：${tags}
+            - **发布时间**：${published}
+            - **分类**：${category}
+            - **标签**：${tags}
 
----
+            ---
 
-## 正文
+            ## 正文
 
-${body}"
+            ${body}
+            BODYEOF
 
-            # 构建 labels（category + tags）
+            # 构建 labels
             labels="${category}"
             if [ -n "$tags" ]; then
               labels="${labels},${tags}"
             fi
 
-            # 调用 GitHub API 创建 Issue
+            # 用 --body-file 读取，彻底解决特殊字符问题
             gh issue create \
               --repo "${TARGET_OWNER}/${TARGET_REPO}" \
               --title "${title}" \
-              --body "${issue_body}" \
+              --body-file "${TEMP_BODY_FILE}" \
               --label "${labels}" \
 
               || echo "⚠️ 创建 Issue 失败: ${filename}"
@@ -76,5 +73,6 @@ ${body}"
             echo "✅ 已提交 Issue: ${title}"
           done
           shopt -u nullglob
+          rm -f "${TEMP_BODY_FILE}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
