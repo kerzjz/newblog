@@ -10,7 +10,7 @@ category: ""
 
 ## 隐私政策
 
-最后更新日期：2026‑09‑06
+最后更新日期：2026‑09‑26
 
 Ker ZJZ（下称“我们”）尊重您的个人隐私。本隐私政策说明了您访问 `kerzjz.qzz.io`（以下简称“本站”）时，相关信息的处理规则。本隐私政策为信息公示文件，仅用于告知访客本站以及接入第三方服务的数据处理方式。单纯浏览网站的行为，不视作您已同意本站处理您的个人信息。您可以自行通过浏览器管理、拒绝本地存储与 Cookie；当您主动使用评论、订阅等功能提交个人信息时，即视为您已同意相关信息处理。
 
@@ -26,7 +26,7 @@ Ker ZJZ（下称“我们”）尊重您的个人隐私。本隐私政策说明�
 
 嵌入的 Giscus 组件作为第三方站点，可在您的设备保存本地站点数据，相关存储行为由 Giscus.app 负责。
 
-本站使用两套独立的匿名流量统计工具：Umami‑Cloud 以及 Cloudflare Web Analytics。两项服务目标为匿名统计，不会保存访客原始 IP；仅收集汇总后的匿名访问数据，例如浏览量、设备类型、浏览器型号、大致访问地区，无法定位到具体个人。统计过程中可能会在浏览器本地生成少量站点存储数据。
+本站使用三套独立的匿名流量统计工具：Microsoft Clarity、Umami‑Cloud 以及 Cloudflare Web Analytics。两项服务目标为匿名统计，但可能会保存访客原始 IP；仅收集汇总后的匿名访问数据，例如浏览量、设备类型、浏览器型号、大致访问地区，无法定位到具体个人。统计过程中可能会在浏览器本地生成少量站点存储数据。
 
 ### 二、第三方服务商
 
@@ -49,9 +49,15 @@ Cloudflare 隐私政策：[https://www.cloudflare.com/privacypolicy/](https://ww
 
 Umami‑Cloud 隐私政策：[https://umami.is/privacy](https://umami.is/privacy)
 
+4. **Microsoft Clarity（匿名用户行为分析）**
+
+本站接入 Microsoft Clarity 用户行为分析服务，用于匿名采集会话录屏、热力图、页面访问地址、设备、操作系统、浏览器相关信息，服务由微软提供，相关数据会传输至微软服务器。
+
+Microsoft Clarity 隐私政策：[https://privacy.microsoft.com/zh-cn/privacystatement](https://privacy.microsoft.com/zh-cn/privacystatement)
+
 ### 三、Cookie 与本地存储说明
 
-部分由本站域名下发的 Cookie、本地站点存储，来源于本站接入的第三方服务，包括但不限于 Cloudflare、Umami‑Cloud、Giscus。
+部分由本站域名下发的 Cookie、本地站点存储，来源于本站接入的第三方服务，包括但不限于 Cloudflare、Umami‑Cloud、Giscus、Microsoft Clarity。
 
 该类数据由对应的第三方组件生成与控制，本站无法完全预知、管控其全部行为。您可以查阅对应第三方服务商的隐私声明获取详情。
 
@@ -65,7 +71,7 @@ Umami‑Cloud 隐私政策：[https://umami.is/privacy](https://umami.is/privacy
 
 ### 六、跨境数据传输
 
-本站的基础设施（代码托管、网页托管、CDN、评论系统、匿名统计）由 GitHub、Cloudflare、Giscus、Umami-Cloud 等第三方服务商提供，上述服务商的服务器位于美国及其他境外地区。
+本站的基础设施（代码托管、网页托管、CDN、评论系统、匿名统计）由 GitHub、Cloudflare、Giscus、Umami-Cloud、Microsoft Clarity 等第三方服务商提供，上述服务商的服务器位于美国及其他境外地区。
 
 因此，您在使用本站服务过程中产生的相关信息（包括但不限于：GitHub 用户名、头像、评论内容、匿名访问数据等）可能会被传输并存储于中国大陆以外的服务器。
 
@@ -84,7 +90,8 @@ Umami‑Cloud 隐私政策：[https://umami.is/privacy](https://umami.is/privacy
 | GitHub, Inc.     | 美国  | 源码存储、评论数据托管、OAuth 登录 | GitHub 用户名、头像、评论内容     | [链接](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement) |
 | Cloudflare, Inc. | 美国  | 网页托管、CDN、安全防护、匿名流量分析 | 匿名访问数据、设备类型、浏览器型号、大致地区 | [链接](https://www.cloudflare.com/privacypolicy/)                                                |
 | Giscus.app       | 美国  | 评论组件嵌入               | 本地站点存储数据               | [链接](https://github.com/giscus/giscus/blob/main/PRIVACY-POLICY.md)                             |
-| Umami-Cloud      | 美国  | 匿名访问统计               | 匿名浏览数据                 | [链接](https://umami.is/privacy)                                                                 |
+| Umami-Cloud      | 美国  | 匿名访问统计               | 匿名浏览数据                 | [链接](https://umami.is/privacy)                                                          | 
+| Microsoft Clarity       | 美国  | 用户行为分析、会话录屏、热力图               | 匿名会话行为、页面 URL、设备、操作系统、浏览器类型               | [链接](https://privacy.microsoft.com/zh-cn/privacystatement)                             |
 ### 七、政策修订
 
 我们保留随时更新本隐私政策的权利，修改后的内容自页面发布之日起生效。如您不同意更新后的条款，请停止使用本站相关功能。
