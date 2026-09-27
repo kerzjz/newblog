@@ -50,7 +50,7 @@ export const siteConfig = {
       { src: "https://cloud.umami.is/script.js", id: "e0312402-c63e-47b2-ba66-e4a7ab208eef" },
     ],
     /** Umami 网站 ID（StatsDashboard 面板使用） */
-    umamiWebsiteId: 'cd983d6c-e011-489d-903f-4757ce41c14d',
+    umamiWebsiteId: 'e0312402-c63e-47b2-ba66-e4a7ab208eef',
     /** Umami 公开面板链接 */
     umamiDashboard: 'https://stats.upxuu.com/share/sFftlqBkgk2z9JM2',
     /** 站点统计 API 基础地址 */
