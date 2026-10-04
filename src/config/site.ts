@@ -17,7 +17,7 @@ export const siteConfig = {
   /** 站点 URL（影响 Canonical、Sitemap、OG、RSS 等所有绝对链接） */
   url: "https://kerzjz.qzz.io", // Base URL of the site
   /** 作者头像 URL（导航栏、关于页、AuthorCard 等处使用） */
-  avatar: "/images/big.png",
+  avatar: "/images/big.webp",
   /** 作者签名/座右铭（显示在 AuthorCard 侧边栏） */
   signature: "Stay hungry, stay foolish. ",
   defaultBgUrl: "/images/bg.jpg",
@@ -75,13 +75,13 @@ export const siteConfig = {
   /** 图片 CDN / 默认封面 */
   assets: {
     /** 文章列表缺省封面图（为空时使用随机图） */
-    defaultPostCover: "/images/big.png",
+    defaultPostCover: "/images/big.webp",
     /** 随机图服务地址（当文章无封面时 fallback 使用） */
-    randomImage: "/images/me.png",
+    randomImage: "/images/me.webp",
     /** 站点 favicon 路径（相对站点根目录） */
-    favicon: "/images/me.png",
+    favicon: "/images/me.webp",
     /** 分享海报中使用的头像（绝对路径，用于 Canvas 绘制） */
-    posterAvatar: "/images/me.jpg",
+    posterAvatar: "/images/me.webp",
   },
 
   /** 站点运行起始时间（页脚"已在互联网中航行"计时器用） */
@@ -187,7 +187,7 @@ export const seoConfig = {
   /** 默认页面描述 */
   defaultDescription: "Ker ZJZ",
   /** 默认 OG 图片 URL */
-  defaultImage: "/images/big.png",
+  defaultImage: "/images/big.webp",
   /** SEO 关键词 */
   keywords: ["Ker ZJZ", "blog", "科技", "艺术与文化", "经济"],
   /** robots meta 内容 */
