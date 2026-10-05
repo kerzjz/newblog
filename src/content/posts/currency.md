@@ -1,6 +1,6 @@
 ---
 title: "什么是货币"
-published: 2026-10-01 17:02:00
+published: 2026-10-05 13:20:00
 description: ""
 tags: []
 category: "经济"
