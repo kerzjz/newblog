@@ -9,6 +9,7 @@ interface PageBannerProps {
   tagName?: string | null;
   postsCount?: number;
   post?: any;
+  contentType?: "post" | "page";
 }
 
 export function PageBanner({ 
@@ -16,7 +17,8 @@ export function PageBanner({
   categoryName: propCategoryName, 
   tagName: propTagName, 
   postsCount: propPostsCount,
-  post: propPost
+  post: propPost,
+  contentType = "post"
 }: PageBannerProps) {
   // Use props if provided, otherwise fallback to window.location (client-side only)
   const pathname = propPathname || (typeof window !== 'undefined' ? window.location.pathname : '');
@@ -79,6 +81,9 @@ export function PageBanner({
     }
 
     if (post) {
+      const detailLabel = contentType === "page"
+        ? infoConfig.banner.labels.page
+        : infoConfig.banner.labels.post;
       return (
         <motion.div
           key="post-detail"
@@ -89,7 +94,7 @@ export function PageBanner({
           className="flex flex-col items-center md:items-end justify-center gap-1 md:gap-2 mt-2 md:mt-0 max-w-full"
         >
           <div className="text-[10px] md:text-xs font-black text-[#0ea5e9] bg-white dark:bg-slate-700 border-2 border-[#0284c7] px-2 py-0.5 rounded-sm shadow-[2px_2px_0px_0px_#0284c7] transform md:rotate-2 uppercase tracking-widest shrink-0 select-none">
-            {infoConfig.banner.labels.post}
+            {detailLabel}
           </div>
           <h2 className="text-xs sm:text-base md:text-2xl font-black text-[#0284c7] bg-[#fde68a] border-2 md:border-3 border-[#0284c7] shadow-[2.5px_2.5px_0px_0px_#f59e0b] px-3.5 py-1.5 transform md:-rotate-1 shrink-0 max-w-[70vw] md:max-w-[450px] leading-snug font-sans text-center md:text-right break-words line-clamp-2 md:line-clamp-1">
             {post.title}
@@ -128,7 +133,7 @@ export function PageBanner({
     }
 
     return null;
-  }, [categoryName, tagName, post, pathname, postsCount]);
+  }, [categoryName, tagName, post, pathname, postsCount, contentType]);
 
   return (
     <motion.div

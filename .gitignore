@@ -14,4 +14,5 @@ xuhome.zip
 np.exe
 *.spec
 build/
-.freebuff
+.freebuff/
+.zcode/

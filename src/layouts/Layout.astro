@@ -23,6 +23,7 @@ interface Props {
   categoryName?: string | null;
   tagName?: string | null;
   post?: { title: string; date: string } | null;
+  contentType?: "post" | "page";
   isTalk?: boolean;
   postsCount?: number;
   isAboutPage?: boolean;
@@ -36,6 +37,7 @@ const {
   categoryName = null,
   tagName = null,
   post = null,
+  contentType = "post",
   isTalk = false,
   postsCount = 0,
   isAboutPage = false,
@@ -320,6 +322,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).href;
               tagName={tagName}
               post={post}
               postsCount={postsCount}
+              contentType={contentType}
             />
 
             <main

@@ -207,6 +207,7 @@ export const bannerConfig = {
     category: "Category",
     tag: "Tag",
     post: "POST",
+    page: "PAGE",
     talk: "TALK",
   },
   /** 说说页打字动画内容 */
