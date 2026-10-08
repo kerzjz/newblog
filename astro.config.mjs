@@ -27,6 +27,9 @@ export default defineConfig({
     rehypePlugins: [rehypeKatex],
   },
   vite: {
+    build: {
+      target: "chrome90"
+    },
     plugins: [tailwindcss()],
     ssr: {
       noExternal: ['@fancyapps/ui', '@google/generative-ai']
