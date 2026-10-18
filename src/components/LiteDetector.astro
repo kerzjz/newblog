@@ -23,23 +23,17 @@ const liteBase = '/lite/';
 <script is:inline>
 (function () {
   try {
-    /* '/lite/' 必须硬编码：is:inline 不做插值，而 define:vars 会包一层箭头函数，
-       两者都会让这段 ES5 代码在老浏览器里失效。 */
     var LITE = '/lite/';
     var OFF_KEY = 'xu-lite-off';
     var path = location.pathname || '/';
-
-    // 0) 已经在降级站内 —— 必须直接返回，否则死循环刷新
     if (path === '/lite' || path.indexOf(LITE) === 0) return;
 
-    // 1) 退出降级：?force=1 当次生效，并写进 sessionStorage 让整站后续导航都保持完整版
     var qs = (location.search || '').replace(/^\?/, '');
     var force = false;
     if (qs) {
       var pairs = qs.split('&');
       for (var i = 0; i < pairs.length; i++) {
         var key = pairs[i].split('=')[0];
-        /* 兼容旧版 fallback 页里写死的 ?force=modern */
         if (key === 'force') { force = true; break; }
       }
     }
@@ -51,23 +45,38 @@ const liteBase = '/lite/';
       if (window.sessionStorage && sessionStorage.getItem(OFF_KEY) === '1') return;
     } catch (e) {}
 
-    // 2) 特性检测：任一不满足即视为旧设备
-    //    a. 原生 ES Module —— 决定 Astro 产出的所有 JS 能否被执行
-    //    b. CSS 自定义属性 —— 决定 Tailwind v4 产物是否还能看
+    // ========== Chrome 版本 < 90 直接降级 ==========
+    var ua = navigator.userAgent || '';
+    var chromeMatch = ua.match(/Chrome\/(\d+)\./);
+    var isOldChrome = false;
+    if (chromeMatch) {
+      var ver = parseInt(chromeMatch[1], 10);
+      // 排除 Edge/Edg，只匹配原生 Chromium 及类似 fork
+      if (!/Edge|Edg/.test(ua) && ver < 90) {
+        isOldChrome = true;
+      }
+    }
+    if (isOldChrome) {
+      var slug = '';
+      if (path.indexOf('/posts/') === 0) {
+        slug = path.substring(7).replace(/\/+$/, '');
+      }
+      location.replace(slug ? LITE + 'posts/' + slug + '/' : LITE);
+      return;
+    }
+    // ======================================================
+
+    // 特性检测：ESM + CSS 变量
     var hasEsm = false;
     var hasCssVars = false;
     try {
       hasEsm = 'noModule' in HTMLScriptElement.prototype;
     } catch (e) {}
     try {
-      hasCssVars = !!(window.CSS && CSS.supports &&
-        (CSS.supports('--a', '0') || CSS.supports('color', 'var(--a)')));
+      hasCssVars = !!(window.CSS && typeof CSS.supports === 'function' && CSS.supports('--x:0'));
     } catch (e) {}
     if (hasEsm && hasCssVars) return;
 
-    // 3) 同路径映射到精简版，读文章不用回列表页重找
-    //    注意：location.pathname 已经是百分号编码过的，直接拼接即可；
-    //    再跑一次 encodeURIComponent 会变成 %25E4… 双重编码，反而打不开。
     var slug = '';
     if (path.indexOf('/posts/') === 0) {
       slug = path.substring(7).replace(/\/+$/, '');
@@ -77,5 +86,5 @@ const liteBase = '/lite/';
 })();
 </script>
 <noscript>
-  <meta http-equiv="refresh" content={'0;url=' + liteBase} />
+  <meta http-equiv="refresh" content="0;url=/lite/" />
 </noscript>
