@@ -49,12 +49,15 @@ export async function getProcessedPosts(collectionName: string = 'posts'): Promi
     if (rawDate) {
       const d = new Date(rawDate);
       if (!isNaN(d.getTime())) {
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        const hours = String(d.getHours()).padStart(2, '0');
-        const minutes = String(d.getMinutes()).padStart(2, '0');
-        const seconds = String(d.getSeconds()).padStart(2, '0');
+        /* YAML 解析无时区日期时按 UTC 处理（如 "2026-10-05 13:20:00" → 13:20Z）。
+           用 getUTC* 取值保证显示的是 frontmatter 原始值，
+           不会因构建服务器时区再偏移。 */
+        const year = d.getUTCFullYear();
+        const month = String(d.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(d.getUTCDate()).padStart(2, '0');
+        const hours = String(d.getUTCHours()).padStart(2, '0');
+        const minutes = String(d.getUTCMinutes()).padStart(2, '0');
+        const seconds = String(d.getUTCSeconds()).padStart(2, '0');
         parsedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       }
     }
@@ -121,12 +124,12 @@ export async function getProcessedTalks(): Promise<TalkItem[]> {
     if (data.date) {
       const d = new Date(data.date);
       if (!isNaN(d.getTime())) {
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        const hours = String(d.getHours()).padStart(2, '0');
-        const minutes = String(d.getMinutes()).padStart(2, '0');
-        const seconds = String(d.getSeconds()).padStart(2, '0');
+        const year = d.getUTCFullYear();
+        const month = String(d.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(d.getUTCDate()).padStart(2, '0');
+        const hours = String(d.getUTCHours()).padStart(2, '0');
+        const minutes = String(d.getUTCMinutes()).padStart(2, '0');
+        const seconds = String(d.getUTCSeconds()).padStart(2, '0');
         parsedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       }
     }

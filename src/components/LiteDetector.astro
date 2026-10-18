@@ -1,0 +1,81 @@
+---
+/**
+ * LiteDetector —— 旧设备特性检测 + 降级跳转（全站唯一降级入口）
+ *
+ * 替代原先写在 Layout.astro 里的降级脚本。原实现有 4 个致命问题：
+ *   1. `location.href = '{FALLBACK_URL}'` 写在 `<script is:inline>` 内部。
+ *      Astro 的 is:inline 是「原样输出、不做表达式插值」，因此产物里真的就是字面量
+ *      `'{FALLBACK_URL}'`，浏览器跳去一个不存在的主机 —— 降级等于把人丢进出错页。
+ *   2. 降级目标是站外 GitHub Pages，站外资源一挂整个站的降级全废，且没有回路保护，
+ *      若目标站也用同一套 Layout 会形成跨站死循环。
+ *   3. 检测项（Promise / fetch / IntersectionObserver / grid）没有覆盖真正致命的一项：
+ *      Astro 产出的 JS 全是 `<script type="module">`，不支持 ESM 的浏览器一行都不执行。
+ *   4. `<noscript>` 里的 meta refresh 同样写了 `{FALLBACK_URL}` 字面量。
+ *
+ * 现方案：降级页与正式站同源，路径可映射（/posts/x → /lite/posts/x/），
+ * 带死循环保护与用户主动退出开关，脚本严格 ES5。
+ *
+ * 放置要求：必须是 <head> 里第一个执行的脚本，早于任何使用 const / 箭头函数的内联脚本
+ * —— 老浏览器解析到 ES6 语法会直接 SyntaxError，导致其后的脚本全部不执行。
+ */
+const liteBase = '/lite/';
+---
+<script is:inline>
+(function () {
+  try {
+    /* '/lite/' 必须硬编码：is:inline 不做插值，而 define:vars 会包一层箭头函数，
+       两者都会让这段 ES5 代码在老浏览器里失效。 */
+    var LITE = '/lite/';
+    var OFF_KEY = 'xu-lite-off';
+    var path = location.pathname || '/';
+
+    // 0) 已经在降级站内 —— 必须直接返回，否则死循环刷新
+    if (path === '/lite' || path.indexOf(LITE) === 0) return;
+
+    // 1) 退出降级：?force=1 当次生效，并写进 sessionStorage 让整站后续导航都保持完整版
+    var qs = (location.search || '').replace(/^\?/, '');
+    var force = false;
+    if (qs) {
+      var pairs = qs.split('&');
+      for (var i = 0; i < pairs.length; i++) {
+        var key = pairs[i].split('=')[0];
+        /* 兼容旧版 fallback 页里写死的 ?force=modern */
+        if (key === 'force') { force = true; break; }
+      }
+    }
+    if (force) {
+      try { if (window.sessionStorage) sessionStorage.setItem(OFF_KEY, '1'); } catch (e) {}
+      return;
+    }
+    try {
+      if (window.sessionStorage && sessionStorage.getItem(OFF_KEY) === '1') return;
+    } catch (e) {}
+
+    // 2) 特性检测：任一不满足即视为旧设备
+    //    a. 原生 ES Module —— 决定 Astro 产出的所有 JS 能否被执行
+    //    b. CSS 自定义属性 —— 决定 Tailwind v4 产物是否还能看
+    var hasEsm = false;
+    var hasCssVars = false;
+    try {
+      hasEsm = 'noModule' in HTMLScriptElement.prototype;
+    } catch (e) {}
+    try {
+      hasCssVars = !!(window.CSS && CSS.supports &&
+        (CSS.supports('--a', '0') || CSS.supports('color', 'var(--a)')));
+    } catch (e) {}
+    if (hasEsm && hasCssVars) return;
+
+    // 3) 同路径映射到精简版，读文章不用回列表页重找
+    //    注意：location.pathname 已经是百分号编码过的，直接拼接即可；
+    //    再跑一次 encodeURIComponent 会变成 %25E4… 双重编码，反而打不开。
+    var slug = '';
+    if (path.indexOf('/posts/') === 0) {
+      slug = path.substring(7).replace(/\/+$/, '');
+    }
+    location.replace(slug ? LITE + 'posts/' + slug + '/' : LITE);
+  } catch (e) {}
+})();
+</script>
+<noscript>
+  <meta http-equiv="refresh" content={'0;url=' + liteBase} />
+</noscript>
