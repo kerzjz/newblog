@@ -45,14 +45,14 @@ const liteBase = '/lite/';
       if (window.sessionStorage && sessionStorage.getItem(OFF_KEY) === '1') return;
     } catch (e) {}
 
-    // ========== Chrome 版本 < 90 直接降级 ==========
+    // ========== Chrome 版本 < 99 直接降级 ==========
     var ua = navigator.userAgent || '';
     var chromeMatch = ua.match(/Chrome\/(\d+)\./);
     var isOldChrome = false;
     if (chromeMatch) {
       var ver = parseInt(chromeMatch[1], 10);
       // 排除 Edge/Edg，只匹配原生 Chromium 及类似 fork
-      if (!/Edge|Edg/.test(ua) && ver < 90) {
+      if (!/Edge|Edg/.test(ua) && ver < 99) {
         isOldChrome = true;
       }
     }

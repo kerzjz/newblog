@@ -4,7 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp", "protobufjs", "@google/genai"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "protobufjs",
+      "@google/genai"
+    ]
   },
   "scripts": {
     "dev": "astro dev",
