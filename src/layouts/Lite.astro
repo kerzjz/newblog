@@ -64,7 +64,7 @@ const allPosts = await getProcessedPosts();
     <hr />
     <p class="meta">
       这是本站的精简版（纯 HTML，无脚本、无样式框架）。
-      <a href="/" onclick="try{window.sessionStorage&&sessionStorage.setItem('xu-lite-off','1')}catch(e){}">返回完整站点</a>
+      <a href="/?force=modern" onclick="try{window.sessionStorage&&sessionStorage.setItem('xu-lite-off','1')}catch(e){}">返回完整站点</a>
       · 全部 <a href="/lite/">文章列表（{allPosts.length} 篇）</a>
       本兼容页面没有评论等部分交互功能，主站《法律声明》中涉及本页不存在功能的相关规则不适用于本页；版权、免责等其他规则以主站为准，页面内容仅供参考，冲突以主站为准。
     </p>
