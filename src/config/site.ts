@@ -126,8 +126,6 @@ export const navConfig: {
   desktop: [
     { name: "首页", href: "/", iconKey:"home", breakpoint: "", activeMatch: /^(\/|\/page\/|\/posts\/|\/category\/|\/tag\/)/ },
     { name: "关于", href: "/about", iconKey:"about", breakpoint: "", activeMatch: /^$/ },
- /**   { name: "归档", href: "/archive", iconKey:"archive", breakpoint: "", activeMatch: /^$/ },
-    { name: "标签", href: "/tags", iconKey:"tags", breakpoint: "", activeMatch: /^$/ },*/
   ],
   /** 移动端汉堡菜单中的额外项 */
   mobileMore: [
@@ -135,6 +133,7 @@ export const navConfig: {
   ],
   /** 外部链接项（桌面端"更多"下拉 + 移动端汉堡菜单底部） */
   external: [
+    { name: "访问精简版", href: "/lite", iconKey:"linkOut", activeMatch: /^$/ },
     { name: "归档", href: "/archive", iconKey:"archive", activeMatch: /^$/ },
     { name: "标签", href: "/tags", iconKey:"tags", activeMatch: /^$/ },
     { name: "说说", href: "/talks", iconKey:"talks", activeMatch: /^$/ },
