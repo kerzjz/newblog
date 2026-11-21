@@ -134,6 +134,7 @@ export const navConfig: {
   /** 外部链接项（桌面端"更多"下拉 + 移动端汉堡菜单底部） */
   external: [
     { name: "访问精简版", href: "/lite", iconKey:"linkOut", activeMatch: /^$/ },
+    { name: "音乐", href: "/music", iconKey:"linkOut", activeMatch: /^$/ },    
     { name: "归档", href: "/archive", iconKey:"archive", activeMatch: /^$/ },
     { name: "标签", href: "/tags", iconKey:"tags", activeMatch: /^$/ },
     { name: "说说", href: "/talks", iconKey:"talks", activeMatch: /^$/ },
@@ -346,6 +347,36 @@ export const aboutConfig = {
   wechatValue: siteConfig.socials.wechat,
   /** GitHub Socials 区块的邮箱链接 */
   socialEmailLink: "mailto:kerzjz@outlook.com",
+};
+
+/**
+ * 音乐歌单页配置（/music）
+ * 播放载体仅为网易云官方 outchain iframe，元数据全部手动维护，
+ * 不抓取任何网易云接口、不接触音频流。
+ */
+export const musicConfig = {
+  /** 是否启用歌单页（false 时页面显示"暂未开放"提示） */
+  enabled: true,
+  /** 浏览器标题 */
+  title: "我的歌单",
+  /** 页面 SEO 描述 */
+  description: "Ker ZJZ 的歌单",
+  /** 页面卡片内显示的栏目标题 */
+  sectionTitle: "歌单",
+  /** 网易云 outchain 播放器高度（官方 iframe 参数，同步写入 iframe 标签） */
+  playerHeight: 66,
+  /** 歌单为空时的提示文字 */
+  emptyText: "歌单里还没有歌曲",
+  /** 禁用时页面显示的文字 */
+  disabledText: "歌单暂未开放",
+  /**
+   * 歌单数据（手动维护，sid 为网易云歌曲页地址中的歌曲 id）
+   * 只有访客视角：无新增/编辑/删除入口，无表单，无本地存储
+   */
+  playlist: [
+    { sid: "1341433", title: "Can Can", artist: "Edward Simoni" },
+    { sid: "1476239407", title: "所念皆星河", artist: "房东的猫" },
+  ],
 };
 
 /**
