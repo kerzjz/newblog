@@ -364,7 +364,7 @@ export const musicConfig = {
   /** 页面卡片内显示的栏目标题 */
   sectionTitle: "歌单",
   /** 网易云 outchain 播放器高度（官方 iframe 参数，同步写入 iframe 标签） */
-  playerHeight: 66,
+  playerHeight: 100,
   /** 歌单为空时的提示文字 */
   emptyText: "歌单里还没有歌曲",
   /** 禁用时页面显示的文字 */
@@ -376,6 +376,8 @@ export const musicConfig = {
   playlist: [
     { sid: "1341433", title: "Can Can", artist: "Edward Simoni" },
     { sid: "1476239407", title: "所念皆星河", artist: "房东的猫" },
+    { sid: "371362", title: "小跳蛙", artist: "青蛙乐队" },
+    { sid: "1473228889", title: "给某某丨木苏里原著《某某》广播剧 主题曲", artist: "陈亦洺 / 马里奥（Mario）" },
   ],
 };
 
