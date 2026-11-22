@@ -377,7 +377,11 @@ export const musicConfig = {
     { sid: "1341433", title: "Can Can", artist: "Edward Simoni" },
     { sid: "1476239407", title: "所念皆星河", artist: "房东的猫" },
     { sid: "371362", title: "小跳蛙", artist: "青蛙乐队" },
-    { sid: "1473228889", title: "给某某丨木苏里原著《某某》广播剧 主题曲", artist: "陈亦洺 / 马里奥（Mario）" },
+    { sid: "1473228889", title: "给某某丨《某某》广播剧第一季主题曲", artist: "陈亦洺/马里奥（Mario）" },
+    { sid: "1869136936", title: "又将盛夏丨《某某》广播剧第二季主题曲", artist: "陈亦洺/马里奥（Mario）" },
+    { sid: "2615459226", title: "第七年丨《某某》广播剧第一季600w播放纪念·主题曲", artist: "陈亦洺" },
+    { sid: "3362530581", title: "正年少丨《某某》广播剧破亿纪念曲", artist: "陈亦洺/柏鹿/动点/Mario" },
+    { sid: "1944644041", title: "夏夜灯塔丨小说《某某》官方主题曲", artist: "沈以诚" },
   ],
 };
 
